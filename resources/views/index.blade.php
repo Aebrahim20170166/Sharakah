@@ -12,7 +12,7 @@
       <p>نموذج استثماري يتيح فتح فروع جديدة بتمويل مشترك، مع ربط محاسبي مباشر (API) يطلعك على المبيعات والمصروفات وتوزيعات الأرباح.</p>
       <div class="chips">
         <a class="btn primary" href="{{ route('opportunities.index')}}">استكشف الفرص</a>
-        <a class="btn" href="faq.html">كيف يعمل النموذج؟</a>
+        <a class="btn" href="{{ url('/faq')  }}">كيف يعمل النموذج؟</a>
       </div>
       <div class="stats">
         <div class="stat"><b>+12</b> فروع نشطة</div>

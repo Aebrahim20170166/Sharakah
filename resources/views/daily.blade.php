@@ -6,20 +6,20 @@
 <div class="pagehead">
   <h2>التقرير اليومي — عيادة أسنان الرياض</h2>
   <div class="chips">
-    <span class="chip">آخر تحديث: 2025-07-26 22:10</span>
+    <span class="chip">آخر تحديث: {{ $date }}</span>
     <span class="chip">المصدر: API محاسبي</span>
   </div>
 </div>
 
 <div class="grid cols-3">
   <div class="card">
-    <div class="kpi"><span class="muted">مبيعات اليوم</span><b>8,900 ر.س</b></div>
+    <div class="kpi"><span class="muted">مبيعات اليوم</span><b>{{ $totalBuy }} ر.س</b></div>
   </div>
   <div class="card">
-    <div class="kpi"><span class="muted">مصروفات اليوم</span><b>2,100 ر.س</b></div>
+    <div class="kpi"><span class="muted">مصروفات اليوم</span><b>{{ $totalSell }} ر.س</b></div>
   </div>
   <div class="card">
-    <div class="kpi"><span class="muted">صافي اليوم</span><b>6,800 ر.س</b></div>
+    <div class="kpi"><span class="muted">صافي اليوم</span><b>{{ $totalBuy - $totalSell }} ر.س</b></div>
   </div>
 </div>
 
@@ -35,24 +35,14 @@
       </tr>
     </thead>
     <tbody>
+      @foreach($dailyReorts as $report)
       <tr>
-        <td>10:12</td>
-        <td>بيع</td>
-        <td>جلسة كشف</td>
-        <td>300</td>
+        <td>{{ $report->created_at->format('Y-m-d h:i a') }}</td>
+        <td>{{ $report->type == 0 ? 'بيع' : 'شراء' }}</td>
+        <td>{{ $report->desc }}</td>
+        <td>{{ $report->amount }} ر.س</td>
       </tr>
-      <tr>
-        <td>12:40</td>
-        <td>شراء</td>
-        <td>مواد مستهلكة</td>
-        <td>-180</td>
-      </tr>
-      <tr>
-        <td>16:05</td>
-        <td>بيع</td>
-        <td>تركيبات</td>
-        <td>2,500</td>
-      </tr>
+      @endforeach
     </tbody>
   </table>
 </section>
