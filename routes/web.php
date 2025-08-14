@@ -6,8 +6,10 @@ use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\OpportunityController as AdminOpportunityController;
+use App\Http\Controllers\Admin\OpportunityCostsController;
 use App\Http\Controllers\Admin\SectorController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Web\InvestmentController;
 use App\Http\Controllers\Web\OpportunityController;
 use App\Http\Controllers\Web\SupportController;
 use App\Http\Controllers\Web\UserController;
@@ -33,6 +35,8 @@ Route::get('/opportunities/filter', [OpportunityController::class, 'filter'])->n
 
 
 Route::get('/opportunity/{opportunity}', [OpportunityController::class, 'show'])->name('opportunity');
+// route for investment on some opportunity
+Route::post('/opportunity/{opportunity}/invest', [InvestmentController::class, 'store'])->name('opportunity.invest');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -64,12 +68,12 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/sign-up', [AuthController::class, 'signUp'])->name('sign-up');
 
     //sectors routes
-    Route::get('/sectors', [SectorController::class, 'index'])->name('sectors.index');
-    Route::get('/sectors/create', [SectorController::class, 'create'])->name('sectors.create');
-    Route::post('/sectors', [SectorController::class, 'store'])->name('sectors.store');
-    Route::get('/sectors/{id}/edit', [SectorController::class, 'edit'])->name('sectors.edit');
-    Route::put('/sectors/{id}', [SectorController::class, 'update'])->name('sectors.update');
-    Route::delete('/sectors/{id}', [SectorController::class, 'destroy'])->name('sectors.destroy');
+    Route::get('/sectors', [SectorController::class, 'index'])->name('dashboard.sectors.index');
+    Route::get('/sectors/create', [SectorController::class, 'create'])->name('dashboard.sectors.create');
+    Route::post('/sectors', [SectorController::class, 'store'])->name('dashboard.sectors.store');
+    Route::get('/sectors/{id}/edit', [SectorController::class, 'edit'])->name('dashboard.sectors.edit');
+    Route::put('/sectors/{id}', [SectorController::class, 'update'])->name('dashboard.sectors.update');
+    Route::delete('/sectors/{id}', [SectorController::class, 'destroy'])->name('dashboard.sectors.destroy');
 
     // branches routes
     Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
@@ -110,4 +114,12 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/users/{id}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{id}', [AdminUserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+    // cities routes
+    Route::get('/costs', [OpportunityCostsController::class, 'index'])->name('dashboard.opportunity_costs.index');
+    Route::get('/costs/create', [OpportunityCostsController::class, 'create'])->name('dashboard.opportunity_costs.create');
+    Route::post('/costs', [OpportunityCostsController::class, 'store'])->name('dashboard.opportunity_costs.store');
+    Route::get('/costs/{id}/edit', [OpportunityCostsController::class, 'edit'])->name('dashboard.opportunity_costs.edit');
+    Route::put('/costs/{id}', [OpportunityCostsController::class, 'update'])->name('dashboard.opportunity_costs.update');
+    Route::delete('/costs/{id}', [OpportunityCostsController::class, 'destroy'])->name('dashboard.opportunity_costs.destroy');
 });
