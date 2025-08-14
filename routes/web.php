@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\OpportunityCostsController;
 use App\Http\Controllers\Admin\SectorController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\InvestmentController;
+use App\Http\Controllers\Admin\InvestmentController as AdminInvestmentController;
 use App\Http\Controllers\Web\OpportunityController;
 use App\Http\Controllers\Web\SupportController;
 use App\Http\Controllers\Web\UserController;
@@ -121,5 +122,20 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/costs/{id}/edit', [OpportunityCostsController::class, 'edit'])->name('dashboard.opportunity_costs.edit');
         Route::put('/costs/{id}', [OpportunityCostsController::class, 'update'])->name('dashboard.opportunity_costs.update');
         Route::delete('/costs/{id}', [OpportunityCostsController::class, 'destroy'])->name('dashboard.opportunity_costs.destroy');
+
+
+        // cities routes
+        Route::get('/invistmints', [AdminInvestmentController::class, 'index'])->name('dashboard.invistmints.index');
+        Route::get('/invistmints/{id}', [AdminInvestmentController::class, 'show'])->name('dashboard.invistmints.show');
+        Route::post('/invistmints/{id}/approve', [AdminInvestmentController::class, 'approve'])->name('dashboard.invistmints.approve');
+        Route::post('/invistmints/{id}/reject', [AdminInvestmentController::class, 'reject'])->name('dashboard.invistmints.reject');
+        Route::post('/invistmints/{id}/cancel', [AdminInvestmentController::class, 'cancel'])->name('dashboard.invistmints.cancel');
+        Route::post('/invistmints/bulk-action', [AdminInvestmentController::class, 'bulkAction'])->name('dashboard.invistmints.bulk-action');
+        Route::get('/invistmints/export', [AdminInvestmentController::class, 'export'])->name('dashboard.invistmints.export');
+
+
+        Route::get('/daily_report/{id}', [AdminInvestmentController::class, 'daily_report'])->name('dashboard.invistmints.daily_report');
+        Route::post('/daily_report/store', [AdminInvestmentController::class, 'daily_report_store'])->name('dashboard.invistmints.daily_report_store');
+
     });
 });

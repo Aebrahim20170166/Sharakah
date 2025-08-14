@@ -63,7 +63,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($costs as $cost)
+                                    @foreach($costs as $cost)
                                     <tr>
                                         <td>{{ $cost->id }}</td>
                                         <td>{{ $cost->item }}</td>
@@ -102,19 +102,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center py-4">
-                                            <div class="text-muted">
-                                                <i class="fas fa-inbox fa-2x mb-3"></i>
-                                                <p>لا توجد تكاليف مضافة حالياً</p>
-                                                <a href="{{ route('dashboard.opportunity_costs.create') }}" class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-plus me-1"></i>إضافة أول تكلفة
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
