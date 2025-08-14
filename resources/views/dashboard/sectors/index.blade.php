@@ -81,7 +81,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $sector->created_at->format('Y-m-d') }}</td>
+                                        <td>{{ $sector->created_at }}</td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
                                                 <!-- زر تعديل -->

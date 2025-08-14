@@ -36,6 +36,12 @@ class Opportunity extends Model
         return $this->hasMany(Cost::class);
     }
 
+    // investments relationship
+    public function investments()
+    {
+        return $this->hasMany(Investment::class);
+    }
+
     // handle created_at
     public function getCreatedAtAttribute($value)
     {

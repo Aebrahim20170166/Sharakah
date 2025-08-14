@@ -16,12 +16,18 @@ class Investment extends Model
     // منع الـ Mass Assignment على كل الحقول ما عدا المحدد
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    
+    // handle created_at
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d H:i:s');
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    // علاقة الاستثمار بالفرصة
     public function opportunity()
     {
         return $this->belongsTo(Opportunity::class, 'opportunity_id');
