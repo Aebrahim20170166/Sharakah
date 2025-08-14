@@ -47,9 +47,9 @@
         <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
             <div>© 2025 منصة افتتاح الفروع. جميع الحقوق محفوظة.</div>
             <div class="chips">
-                <a class="chip" href="{{ url('/faq') }}">الأسئلة الشائعة</a>
-                <a class="chip" href="{{ url('/terms') }}">الشروط والأحكام</a>
-                <a class="chip" href="{{ url('/privacy') }}">سياسة الخصوصية</a>
+                <a class="chip" href="{{ route('faq') }}">الأسئلة الشائعة</a>
+                <a class="chip" href="{{ route('terms') }}">الشروط والأحكام</a>
+                <a class="chip" href="{{ route('privacy') }}">سياسة الخصوصية</a>
             </div>
         </div>
     </footer>
