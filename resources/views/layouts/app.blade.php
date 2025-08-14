@@ -20,7 +20,7 @@
             </a>
             <nav class="navlinks">
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">الرئيسية</a>
-                <a href="{{ route('opportunities.index') }}" class="{{ request()->routeIs('opportunities.*') ? 'active' : '' }}">الفرص</a>
+                <a href="{{ route('opportunities') }}" class="{{ request()->routeIs('opportunities.*') ? 'active' : '' }}">الفرص</a>
                 <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">لوحة المستثمر</a>
                 <a href="{{ route('support') }}" class="{{ request()->routeIs('support') ? 'active' : '' }}">الدعم</a>
             </nav>
@@ -28,7 +28,7 @@
                 @guest
                     <a class="btn ghost" href="{{ route('registeration') }}">تسجيل الدخول</a>
                 @endguest
-                <a class="btn primary" href="{{ route('opportunities.index') }}">استثمر الآن</a>
+                <a class="btn primary" href="{{ route('opportunities') }}">استثمر الآن</a>
             </div>
             <div class="cta">
                 <button class="btn" id="themeToggle" title="تبديل السمة">السمة</button>
@@ -55,7 +55,7 @@
     </footer>
 
     <script src="{{ asset('js/app.js') }}"></script>
-    @stack('scripts')
+    @yield('scripts')
 </body>
 
 </html>

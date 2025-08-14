@@ -19,7 +19,7 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (auth()->attempt($credentials)) {
-            return redirect()->intended('home');
+            return redirect()->route('home');
         }
 
         return back()->withErrors([

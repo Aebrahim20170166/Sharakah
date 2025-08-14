@@ -27,15 +27,18 @@
     </section>
 
     <aside class="card" id="invest">
-        <h3>الاستثمار</h3>
-        <label class="label" for="amount">المبلغ</label>
-        <input class="input" id="amount" placeholder="مثال: 20000" />
-        <div class="kpi"><span class="muted">نسبة التمويل الحالية</span><b>73%</b></div>
-        <div class="progress"><span style="--value:73%"></span></div>
-        <div class="form-actions" style="margin-top:10px;">
-            <a class="btn primary" href="{{ url('/auth') }}">متابعة</a>
-            <a class="btn" href="{{ url('/opportunities') }}">رجوع</a>
-        </div>
+        <form>
+            <h3>الاستثمار</h3>
+            <label class="label" for="amount">المبلغ</label>
+            <input class="input" id="amount" placeholder="مثال: 20000" />
+            <input class="input" type="hidden" name="opportunity_id" id="opportunity_id" value="{{$opportunity->id}}" />
+            <div class="kpi"><span class="muted">نسبة التمويل الحالية</span><b>73%</b></div>
+            <div class="progress"><span style="--value:73%"></span></div>
+            <div class="form-actions" style="margin-top:10px;">
+                <a class="btn primary" href="{{ url('/auth') }}">متابعة</a>
+                <a class="btn" href="{{ url('/opportunities') }}">رجوع</a>
+            </div>
+        </form>
     </aside>
 </div>
 

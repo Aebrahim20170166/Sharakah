@@ -1,7 +1,17 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\OpportunityController as AdminOpportunityController;
+use App\Http\Controllers\Admin\SectorController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\OpportunityController;
+use App\Http\Controllers\Web\SupportController;
 use App\Http\Controllers\Web\UserController;
+use App\Models\Support;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,23 +25,89 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [OpportunityController::class, 'index'])->name('home');
+Route::get('/home', [OpportunityController::class, 'home'])->name('home');
 
-Route::get('/opportunities/all', [OpportunityController::class, 'index'])->name('opportunities.index');
+Route::get('/opportunities/all', [OpportunityController::class, 'all'])->name('opportunities');
+
+Route::get('/opportunities/filter', [OpportunityController::class, 'filter'])->name('opportunities.filter');
+
 
 Route::get('/opportunity/{opportunity}', [OpportunityController::class, 'show'])->name('opportunity');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
 
-Route::get('/support', function () {
-    return view('support');
-})->name('support');
+Route::get('/support', [SupportController::class, 'index'])->name('support');
 
+Route::post('/support', [SupportController::class, 'store'])->name('support.store');
 
 Route::get('/registeration', [UserController::class, 'login_page'])->name('registeration');
 
 Route::post('/login', [UserController::class, 'login'])->name('login');
 
 Route::post('/register', [UserController::class, 'register'])->name('register');
+
+// group dashboard route here
+Route::prefix('dashboard')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+
+    Route::get('/support', [SupportController::class, 'index'])->name('support');
+
+    Route::post('/support', [SupportController::class, 'store'])->name('support.store');
+
+    Route::get('/sign-up-page', [AuthController::class, 'signUpPage'])->name('sign-up-page');
+
+    Route::get('/login-page', [AuthController::class, 'loginPage'])->name('login-page');
+
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/sign-up', [AuthController::class, 'signUp'])->name('sign-up');
+
+    //sectors routes
+    Route::get('/sectors', [SectorController::class, 'index'])->name('sectors.index');
+    Route::get('/sectors/create', [SectorController::class, 'create'])->name('sectors.create');
+    Route::post('/sectors', [SectorController::class, 'store'])->name('sectors.store');
+    Route::get('/sectors/{id}/edit', [SectorController::class, 'edit'])->name('sectors.edit');
+    Route::put('/sectors/{id}', [SectorController::class, 'update'])->name('sectors.update');
+    Route::delete('/sectors/{id}', [SectorController::class, 'destroy'])->name('sectors.destroy');
+
+    // branches routes
+    Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
+    Route::get('/branches/create', [BranchController::class, 'create'])->name('branches.create');
+    Route::post('/branches', [BranchController::class, 'store'])->name('branches.store');
+    Route::get('/branches/{id}/edit', [BranchController::class, 'edit'])->name('branches.edit');
+    Route::put('/branches/{id}', [BranchController::class, 'update'])->name('branches.update');
+    Route::delete('/branches/{id}', [BranchController::class, 'destroy'])->name('branches.destroy');
+
+    // cities routes
+    Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
+    Route::get('/cities/create', [CityController::class, 'create'])->name('cities.create');
+    Route::post('/cities', [CityController::class, 'store'])->name('cities.store');
+    Route::get('/cities/{id}/edit', [CityController::class, 'edit'])->name('cities.edit');
+    Route::put('/cities/{id}', [CityController::class, 'update'])->name('cities.update');
+    Route::delete('/cities/{id}', [CityController::class, 'destroy'])->name('cities.destroy');
+
+    //countries routes
+    Route::get('/countries', [CountryController::class, 'index'])->name('countries.index');
+    Route::get('/countries/create', [CountryController::class, 'create'])->name('countries.create');
+    Route::post('/countries', [CountryController::class, 'store'])->name('countries.store');
+    Route::get('/countries/{id}/edit', [CountryController::class, 'edit'])->name('countries.edit');
+    Route::put('/countries/{id}', [CountryController::class, 'update'])->name('countries.update');
+    Route::delete('/countries/{id}', [CountryController::class, 'destroy'])->name('countries.destroy');
+
+    //opportunities routes
+    Route::get('/opportunities', [AdminOpportunityController::class, 'index'])->name('opportunities.index');
+    Route::get('/opportunities/create', [AdminOpportunityController::class, 'create'])->name('opportunities.create');
+    Route::post('/opportunities', [AdminOpportunityController::class, 'store'])->name('opportunities.store');
+    Route::get('/opportunities/{id}/edit', [AdminOpportunityController::class, 'edit'])->name('opportunities.edit');
+    Route::put('/opportunities/{id}', [AdminOpportunityController::class, 'update'])->name('opportunities.update');
+    Route::delete('/opportunities/{id}', [AdminOpportunityController::class, 'destroy'])->name('opportunities.destroy');
+
+    // users routes
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+    Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+});
