@@ -12,8 +12,11 @@ use App\Http\Controllers\Admin\SupportController as AdminSupportController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\InvestmentController;
 use App\Http\Controllers\Admin\InvestmentController as AdminInvestmentController;
+use App\Http\Controllers\Web\FaqController;
 use App\Http\Controllers\Web\OpportunityController;
+use App\Http\Controllers\Web\PrivacyController;
 use App\Http\Controllers\Web\SupportController;
+use App\Http\Controllers\Web\TermsController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,10 +45,12 @@ Route::get('/opportunities/filter', [OpportunityController::class, 'filter'])->n
 Route::get('/opportunity/{opportunity}', [OpportunityController::class, 'show'])->name('opportunity');
 // route for investment on some opportunity
 Route::post('/opportunity/{opportunity}/invest', [InvestmentController::class, 'store'])->name('opportunity.invest');
-
-
-
 Route::get('/support', [SupportController::class, 'index'])->name('support');
+
+
+Route::get('/terms', [TermsController::class, 'index'])->name('terms');
+Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
 Route::post('/support', [SupportController::class, 'store'])->name('support.store');
 
