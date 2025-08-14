@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Web\OpportunityResource;
 use App\Models\City;
+use App\Models\DailyReport;
+use App\Models\Investment;
 use App\Models\Opportunity;
 use App\Models\Sector;
 use Illuminate\Http\Request;
@@ -73,5 +75,15 @@ class OpportunityController extends Controller
         $opportunity = Opportunity::with(['city', 'sector'])->findOrFail($opportunity);
         $percentage = ($opportunity->raised_amount / $opportunity->target_amount) * 100;
         return view('opportunity', compact('opportunity', 'percentage'));
+    }
+    public function daily($id){
+
+        $investment = Investment::with(['user', 'opportunity', 'opportunity.city', 'opportunity.sector'])
+            ->findOrFail($id);
+        $dailyReorts = DailyReport::where('investment_id', $id)->latest()->get();
+        $totalBuy = DailyReport::where(['investment_id' => $id, 'type' => 0])->latest()->sum('amount');
+        $totalSell = DailyReport::where(['investment_id' => $id, 'type' => 1])->latest()->sum('amount');
+        $date = now()->format('Y-m-d h:i a');
+        return view('daily',  compact('investment', 'dailyReorts', 'totalBuy', 'totalSell', 'date'));
     }
 }
