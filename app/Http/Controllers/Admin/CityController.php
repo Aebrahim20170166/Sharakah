@@ -26,26 +26,57 @@ class CityController extends Controller
     // edit city page
     public function edit($id)
     {
-        return view('dashboard.cities.edit', compact('id'));
+        $city = City::findOrFail($id);
+        $countries = Country::all();
+        return view('dashboard.cities.edit', compact('id', 'city', 'countries'));
     }
 
     // store logic
     public function store(Request $request)
     {
         $request->validate([
-            "name_ar" => "required|string|max:255",
+            "name" => "required|string|max:255",
             "name_en" => "required|string|max:255",
             "country_id" => "required|exists:countries,id",
-            
         ]);
 
         // create city
-        City::create([
-            "name" => $request->name_ar,
+        $city = City::create([
+            "name" => $request->name,
             "name_en" => $request->name_en,
             "country_id" => $request->country_id,
         ]);
 
-        return redirect()->route('cities.index')->with('success', 'City created successfully.');
+        return redirect()->route('cities.index')
+            ->with('success', 'تم إضافة المدينة "' . $city->name . '" بنجاح! 🎉');
+    }
+
+    public function update($id, Request $request)
+    {
+        $request->validate([
+            "name" => "required|string|max:255",
+            "name_en" => "required|string|max:255",
+            "country_id" => "required|exists:countries,id",
+        ]);
+
+        $city = City::findOrFail($id);
+        $city->update([
+            "name" => $request->name,
+            "name_en" => $request->name_en,
+            "country_id" => $request->country_id,
+        ]);
+
+        return redirect()->route('cities.index')
+            ->with('success', 'تم تحديث المدينة "' . $city->name . '" بنجاح! ✨');
+    }
+
+    public function destroy($id)
+    {
+        $city = City::findOrFail($id);
+        $name = $city->name; // حفظ الاسم قبل الحذف
+        $city->delete();
+
+        return redirect()->route('cities.index')
+            ->with('success', 'تم حذف المدينة "' . $name . '" بنجاح! 🗑️');
     }
 }

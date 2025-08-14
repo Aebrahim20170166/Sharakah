@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -10,7 +11,8 @@ class UserController extends Controller
     // index page
     public function index()
     {
-        return view('dashboard.users.index');
+        $users = User::where('role', 'investor')->latest()->get();
+        return view('dashboard.users.index', compact('users'));
     }
 
     // add user page
