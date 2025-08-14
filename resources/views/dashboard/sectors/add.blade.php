@@ -1,81 +1,92 @@
 @extends('layouts.dashboard-app')
 
-@section('title', 'اضافة قطاع')
+@section('title', 'إضافة قطاع')
+@section('pageTitle', 'إضافة قطاع')
 
 @section('content')
-        <div class="conatiner-fluid content-inner mt-n5 py-0">
-            <div>
-                <div class="row">
-                    <!-- <div class="col-xl-3 col-lg-4">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between">
-                                <div class="header-title">
-                                    <h4 class="card-title">Add Sector</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
-                    {{-- رسالة خطأ --}}
-                    @if(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="conatiner-fluid content-inner mt-n5 py-0">
+    <div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="card-title mb-0">إضافة قطاع جديد</h4>
                     </div>
-                    @endif
-
-                    {{-- رسائل أخطاء التحقق (Validation) --}}
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
-
-                    <div class="col-xl-12 col-lg-8">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between">
-                                <div class="header-title">
-                                    <h4 class="card-title">اضافة قطاع جديد</h4>
+                    
+                    <div class="card-body">
+                        <div class="new-user-info">
+                            <!-- Error Messages Section -->
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <h6 class="alert-heading mb-2">يرجى تصحيح الأخطاء التالية:</h6>
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="new-user-info">
-                                    <form action="{{ route('dashboard.sectors.store')}}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label class="form-label" for="fname">الاسم بالعربي:</label>
-                                                <input type="text" name="name_ar" class="form-control" id="fname" placeholder="Name Ar">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="form-label" for="lname">الاسم بالانجليزي:</label>
-                                                <input type="text" name="name_en" class="form-control" id="lname" placeholder="Name En">
-                                            </div>
+                            @endif
 
-                                            <div class="form-group col-md-12">
-                                                <label class="form-label" for="image">صورة القطاع:</label>
-                                                <input type="file" name="image" class="form-control" id="image" accept="image/*" required>
-                                            </div>
-                                            
-                                        <button type="submit" class="btn btn-primary">اصافة قطاع جديد</button>
-                                    </form>
+                            @if(session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
-                            </div>
+                            @endif
+
+                            @if(session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            <form action="{{ route('dashboard.sectors.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label" for="name_ar">اسم القطاع بالعربية</label>
+                                        <input type="text" name="name_ar" value="{{ old('name_ar') }}" class="form-control @error('name_ar') is-invalid @enderror" id="name_ar" placeholder="أدخل اسم القطاع بالعربية">
+                                        @error('name_ar')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label" for="name_en">اسم القطاع بالإنجليزية</label>
+                                        <input type="text" name="name_en" value="{{ old('name_en') }}" class="form-control @error('name_en') is-invalid @enderror" id="name_en" placeholder="أدخل اسم القطاع بالإنجليزية">
+                                        @error('name_en')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="form-label" for="image">صورة القطاع</label>
+                                        <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" id="image" accept="image/*" required>
+                                        <small class="form-text text-muted">يجب أن تكون الصورة بصيغة JPG, PNG, أو GIF</small>
+                                        @error('image')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-plus me-2"></i>إضافة القطاع
+                                    </button>
+                                    <a href="{{ route('dashboard.sectors.index') }}" class="btn btn-secondary ms-2">
+                                        <i class="fas fa-arrow-right me-2"></i>إلغاء
+                                    </a>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="btn-download">
-            <a class="btn btn-danger px-3 py-2" href="https://iqonic.design/product/admin-templates/hope-ui-admin-free-open-source-bootstrap-admin-template/" target="_blank">
-                <svg width="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M5.91064 20.5886C5.91064 19.7486 6.59064 19.0686 7.43064 19.0686C8.26064 19.0686 8.94064 19.7486 8.94064 20.5886C8.94064 21.4186 8.26064 22.0986 7.43064 22.0986C6.59064 22.0986 5.91064 21.4186 5.91064 20.5886ZM17.1606 20.5886C17.1606 19.7486 17.8406 19.0686 18.6806 19.0686C19.5106 19.0686 20.1906 19.7486 20.1906 20.5886C20.1906 21.4186 19.5106 22.0986 18.6806 22.0986C17.8406 22.0986 17.1606 21.4186 17.1606 20.5886Z" fill="currentColor"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1907 6.34909C20.8007 6.34909 21.2007 6.55909 21.6007 7.01909C22.0007 7.47909 22.0707 8.13909 21.9807 8.73809L21.0307 15.2981C20.8507 16.5591 19.7707 17.4881 18.5007 17.4881H7.59074C6.26074 17.4881 5.16074 16.4681 5.05074 15.1491L4.13074 4.24809L2.62074 3.98809C2.22074 3.91809 1.94074 3.52809 2.01074 3.12809C2.08074 2.71809 2.47074 2.44809 2.88074 2.50809L5.26574 2.86809C5.60574 2.92909 5.85574 3.20809 5.88574 3.54809L6.07574 5.78809C6.10574 6.10909 6.36574 6.34909 6.68574 6.34909H20.1907ZM14.1307 11.5481H16.9007C17.3207 11.5481 17.6507 11.2081 17.6507 10.7981C17.6507 10.3781 17.3207 10.0481 16.9007 10.0481H14.1307C13.7107 10.0481 13.3807 10.3781 13.3807 10.7981C13.3807 11.2081 13.7107 11.5481 14.1307 11.5481Z" fill="currentColor"></path>
-                </svg>
-            </a>
-        </div>
+    </div>
+</div>
 @endsection
