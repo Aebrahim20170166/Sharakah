@@ -30,6 +30,12 @@ class Opportunity extends Model
         return $this->belongsTo(Sector::class);
     }
 
+    // costs relationship
+    public function costs()
+    {
+        return $this->hasMany(Cost::class);
+    }
+
     // handle created_at
     public function getCreatedAtAttribute($value)
     {
