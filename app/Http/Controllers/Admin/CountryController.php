@@ -24,7 +24,8 @@ class CountryController extends Controller
     // edit country page
     public function edit($id)
     {
-        return view('dashboard.countries.edit', compact('id'));
+        $country = Country::findOrFail($id);
+        return view('dashboard.countries.edit', compact('id', 'country'));
     }
 
     // store logic
@@ -32,23 +33,47 @@ class CountryController extends Controller
     {
         $request->validate([
             "name" => "required|string|max:255",
+            "name_en" => "required|string|max:255",
             "code" => "required|string|max:255",
-            "image" => "required|image"
         ]);
-
-        // store image first
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('countries', 'public');
-        }
 
         // create country
-        Country::create([
+        $country = Country::create([
             "name" => $request->name,
+            "name_en" => $request->name_en,
             "code" => $request->code,
-            "image" => $imagePath
         ]);
 
-        return redirect()->route('countries.index')->with('success', 'Country created successfully.');
+        return redirect()->route('countries.index')
+            ->with('success', 'تم إضافة الدولة "' . $country->name . '" بنجاح! 🎉');
+    }
+
+    public function update($id, Request $request)
+    {
+        $request->validate([
+            "name" => "required|string|max:255",
+            "name_en" => "required|string|max:255",
+            "code" => "required|string|max:255",
+        ]);
+
+        $country = Country::findOrFail($id);
+        $country->update([
+            "name" => $request->name,
+            "name_en" => $request->name_en,
+            "code" => $request->code,
+        ]);
+
+        return redirect()->route('countries.index')
+            ->with('success', 'تم تحديث الدولة "' . $country->name . '" بنجاح! ✨');
+    }
+
+    public function destroy($id)
+    {
+        $country = Country::findOrFail($id);
+        $name = $country->name; // حفظ الاسم قبل الحذف
+        $country->delete();
+
+        return redirect()->route('countries.index')
+            ->with('success', 'تم حذف الدولة "' . $name . '" بنجاح! 🗑️');
     }
 }

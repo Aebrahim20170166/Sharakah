@@ -28,7 +28,10 @@ class OpportunityController extends Controller
     // edit opportunity page
     public function edit($id)
     {
-        return view('dashboard.opportunities.edit', compact('id'));
+        $opportunity = Opportunity::findOrFail($id);
+        $cities = City::all();
+        $sectors = Sector::all();
+        return view('dashboard.opportunities.edit', compact('id', 'opportunity', 'cities', 'sectors'));
     }
 
     // store logic
@@ -36,34 +39,55 @@ class OpportunityController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'tenant_id' => 'required|numeric',
-            'city' => 'required|exists:cities,id',
-            'sector' => 'required|exists:sectors,id',
+            'city_id' => 'required|exists:cities,id',
+            'sector_id' => 'required|exists:sectors,id',
             'min_investment' => 'required|numeric',
-            'status' => 'required|string',
             'target_amount' => 'required|numeric',
-            'raised_amount' => 'required|numeric',
+            'expected_roi' => 'required|numeric',
+            'payback_months' => 'required|string',
+            'summary' => 'required|string',
+            'assumptions' => 'required',
+        ]);
+        
+        $opportunity = Opportunity::create($request->all());
+        
+        return redirect()->route('opportunities.index')
+            ->with('success', 'تم إضافة الفرصة الاستثمارية "' . $opportunity->title . '" بنجاح! 🎉');
+    }
+
+    // update logic
+    public function update(Request $request, $id)
+    {
+        $opportunity = Opportunity::findOrFail($id);
+        
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'city_id' => 'required|exists:cities,id',
+            'sector_id' => 'required|exists:sectors,id',
+            'min_investment' => 'required|numeric',
+            'target_amount' => 'required|numeric',
             'expected_roi' => 'required|numeric',
             'payback_months' => 'required|string',
             'summary' => 'required|string',
             'assumptions' => 'required|array',
+            'assumptions.*' => 'required|string|max:500',
         ]);
-
-        Opportunity::create([
-            'title' => $request->title,
-            'tenant_id' => $request->tenant_id,
-            'city' => $request->city,
-            'sector' => $request->sector,
-            'min_investment' => $request->min_investment,
-            'status' => $request->status,
-            'target_amount' => $request->target_amount,
-            'raised_amount' => $request->raised_amount,
-            'expected_roi' => $request->expected_roi,
-            'payback_months' => $request->payback_months,
-            'summary' => $request->summary,
-            'assumptions' => $request->assumptions,
-        ]);
-
-        return redirect()->route('opportunities.index')->with('success', 'Opportunity created successfully.');
+        
+        $opportunity->update($request->all());
+        
+        return redirect()->route('opportunities.index')
+            ->with('success', 'تم تحديث الفرصة الاستثمارية "' . $opportunity->title . '" بنجاح! ✨');
     }
+
+    // destroy logic
+    public function destroy($id)
+    {
+        $opportunity = Opportunity::findOrFail($id);
+        $title = $opportunity->title; // حفظ العنوان قبل الحذف
+        $opportunity->delete();
+        
+        return redirect()->route('opportunities.index')
+            ->with('success', 'تم حذف الفرصة الاستثمارية "' . $title . '" بنجاح! ��️');
+    }
+    
 }

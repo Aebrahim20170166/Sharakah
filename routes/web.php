@@ -11,7 +11,6 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\OpportunityController;
 use App\Http\Controllers\Web\SupportController;
 use App\Http\Controllers\Web\UserController;
-use App\Models\Support;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/home', [OpportunityController::class, 'home'])->name('home');
+Route::get('/', [OpportunityController::class, 'home'])->name('home');
 
 Route::get('/opportunities/all', [OpportunityController::class, 'all'])->name('opportunities');
 
@@ -34,9 +33,7 @@ Route::get('/opportunities/filter', [OpportunityController::class, 'filter'])->n
 
 Route::get('/opportunity/{opportunity}', [OpportunityController::class, 'show'])->name('opportunity');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->name('dashboard');
+
 
 Route::get('/support', [SupportController::class, 'index'])->name('support');
 
@@ -47,6 +44,7 @@ Route::get('/registeration', [UserController::class, 'login_page'])->name('regis
 Route::post('/login', [UserController::class, 'login'])->name('login');
 
 Route::post('/register', [UserController::class, 'register'])->name('register');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 // group dashboard route here
 Route::prefix('dashboard')->group(function () {
@@ -84,24 +82,24 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/cities/create', [CityController::class, 'create'])->name('cities.create');
     Route::post('/cities', [CityController::class, 'store'])->name('cities.store');
     Route::get('/cities/{id}/edit', [CityController::class, 'edit'])->name('cities.edit');
-    Route::put('/cities/{id}', [CityController::class, 'update'])->name('cities.update');
-    Route::delete('/cities/{id}', [CityController::class, 'destroy'])->name('cities.destroy');
+    Route::post('/cities/{id}', [CityController::class, 'update'])->name('cities.update');
+    Route::get('/cities/{id}', [CityController::class, 'destroy'])->name('cities.destroy');
 
     //countries routes
     Route::get('/countries', [CountryController::class, 'index'])->name('countries.index');
     Route::get('/countries/create', [CountryController::class, 'create'])->name('countries.create');
     Route::post('/countries', [CountryController::class, 'store'])->name('countries.store');
     Route::get('/countries/{id}/edit', [CountryController::class, 'edit'])->name('countries.edit');
-    Route::put('/countries/{id}', [CountryController::class, 'update'])->name('countries.update');
-    Route::delete('/countries/{id}', [CountryController::class, 'destroy'])->name('countries.destroy');
+    Route::post('/countries/{id}', [CountryController::class, 'update'])->name('countries.update');
+    Route::get('/countries/{id}', [CountryController::class, 'destroy'])->name('countries.destroy');
 
     //opportunities routes
     Route::get('/opportunities', [AdminOpportunityController::class, 'index'])->name('opportunities.index');
     Route::get('/opportunities/create', [AdminOpportunityController::class, 'create'])->name('opportunities.create');
     Route::post('/opportunities', [AdminOpportunityController::class, 'store'])->name('opportunities.store');
     Route::get('/opportunities/{id}/edit', [AdminOpportunityController::class, 'edit'])->name('opportunities.edit');
-    Route::put('/opportunities/{id}', [AdminOpportunityController::class, 'update'])->name('opportunities.update');
-    Route::delete('/opportunities/{id}', [AdminOpportunityController::class, 'destroy'])->name('opportunities.destroy');
+    Route::post('/opportunities/{id}', [AdminOpportunityController::class, 'update'])->name('opportunities.update');
+    Route::get('/opportunities/{id}', [AdminOpportunityController::class, 'destroy'])->name('opportunities.destroy');
 
     // users routes
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
