@@ -65,11 +65,36 @@ class InvestmentController extends Controller
     }
 
     // عرض استثمارات المستخدم
-    public function myInvestments()
+    public function myInvestments(Request $request)
     {
         try {
-            
-            return view('dashboard');
+            // جميع استثمارات المستخدم مع بيانات الفرصة
+            $investments = Investment::with(['opportunity', 'opportunity.city', 'opportunity.sector'])
+                ->where('user_id', Auth::id())
+                ->get();
+
+            // إجمالي المبلغ المدفوع
+            $totalAmount = $investments->sum('amount');
+
+            // إجمالي المبلغ المقبوض
+            $totalRecieved = $investments->sum('recieved_amount');
+
+            // نسبة الاسترداد
+            $refundRate = $totalAmount > 0 ? round(($totalRecieved / $totalAmount) * 100, 2) : 0;
+
+            // عدد الفرص قيد التمويل (الفرص التي مجموع استثماراتها أقل من target_amount)
+            $fundingOpportunitiesCount = $investments->filter(function ($investment) {
+                return $investment->opportunity && 
+                    $investment->opportunity->investments->sum('amount') < $investment->opportunity->target_amount;
+            })->pluck('opportunity.id')->unique()->count();
+
+            return view('dashboard', compact(
+                'investments', 
+                'totalAmount', 
+                'totalRecieved', 
+                'refundRate',
+                'fundingOpportunitiesCount'
+            ));
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'حدث خطأ أثناء تحميل استثماراتك. يرجى المحاولة مرة أخرى.');

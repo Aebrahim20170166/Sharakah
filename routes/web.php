@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\OpportunityController as AdminOpportunityController;
 use App\Http\Controllers\Admin\OpportunityCostsController;
 use App\Http\Controllers\Admin\SectorController;
+use App\Http\Controllers\Admin\SupportController as AdminSupportController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\InvestmentController;
 use App\Http\Controllers\Web\OpportunityController;
@@ -30,6 +31,8 @@ Route::get('/', [OpportunityController::class, 'home'])->name('home');
 Route::get('/myInvestments', [InvestmentController::class, 'myInvestments'])->name('myInvestments')->middleware('auth');
 
 Route::get('/opportunities/all', [OpportunityController::class, 'all'])->name('opportunities');
+Route::get('/in-funding-opportunities/all', [OpportunityController::class, 'inFunding'])->name('in_funding_opportunities');
+
 Route::get('/daily/{id}', [OpportunityController::class, 'daily'])->name('daily');
 
 Route::get('/opportunities/filter', [OpportunityController::class, 'filter'])->name('opportunities.filter');
@@ -55,9 +58,10 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 // group dashboard route here
 Route::prefix('dashboard')->group(function () {
     
-    Route::get('/support', [SupportController::class, 'index'])->name('support');
+    Route::get('/support', [AdminSupportController::class, 'index'])->name('dashboard.support.index');
+    Route::delete('/support/{id}/destroy', [AdminSupportController::class, 'destroy'])->name('dashboard.support.destroy');
     
-    Route::post('/support', [SupportController::class, 'store'])->name('support.store');
+    //Route::post('/support', [SupportController::class, 'store'])->name('support.store');
 
     Route::get('/login-page', [AuthController::class, 'loginPage'])->name('login-page');
 

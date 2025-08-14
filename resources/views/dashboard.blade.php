@@ -6,9 +6,9 @@
 <div class="pagehead">
     <h2>لوحة المستثمر</h2>
     <div class="chips">
-        <span class="chip">إجمالي مدفوع: 120,000 ر.س</span>
-        <span class="chip">إجمالي مقبوض: 34,500 ر.س</span>
-        <span class="chip">نسبة الاسترداد: 28.7%</span>
+        <span class="chip">إجمالي مدفوع: {{ number_format($totalAmount, 2) }} ر.س</span>
+        <span class="chip">إجمالي مقبوض: {{ number_format($totalRecieved, 2) }} ر.س</span>
+        <span class="chip">نسبة الاسترداد: {{ $refundRate }}%</span>
     </div>
 </div>
 
@@ -27,8 +27,8 @@
     </div>
     <div class="card">
         <h3>فرص قيد التمويل</h3>
-        <p class="muted">3 فرص قريبة من الإكتمال.</p>
-        <a class="btn" href="{{ url('/opportunities') }}">استعرض</a>
+        <p class="muted">{{ $fundingOpportunitiesCount }} فرص قريبة من الإكتمال.</p>
+        <a class="btn" href="{{ route('in_funding_opportunities') }}">استعرض</a>
     </div>
 </div>
 <section class="section card">
@@ -45,15 +45,16 @@
             </tr>
         </thead>
         <tbody>
+            @foreach($investments as $investment)
             <tr>
-                <td>عيادة أسنان</td>
-                <td>الرياض</td>
-                <td>60,000</td>
-                <td>18,200</td>
-                <td>30.3%</td>
+                <td>{{ $investment->opportunity->title }}</td>
+                <td>{{ $investment->opportunity->city->name }}</td>
+                <td>{{ number_format($investment->amount, 2) }}</td>
+                <td>{{ number_format($investment->received_amount, 2) }}</td>
+                <td>{{ number_format($investment->received_amount / $investment->amount * 100, 2) }}%</td>
                 <td><a class="btn" href="{{ route('daily', 1) }}">تقرير يومي</a></td>
             </tr>
-            
+            @endforeach
         </tbody>
     </table>
 </section>

@@ -74,4 +74,22 @@ class OpportunityController extends Controller
         $percentage = ($opportunity->raised_amount / $opportunity->target_amount) * 100;
         return view('opportunity', compact('opportunity', 'percentage'));
     }
+
+    // الفرص قيد التمويل
+    public function inFunding()
+    {
+        $cities = City::all();
+        $sectors = Sector::all();
+        $opportunities = Opportunity::with(['city', 'sector'])
+            ->whereHas('investments', function ($query) {
+                // فقط لجلب الفرص التي عليها استثمارات
+            })
+            ->get()
+            ->filter(function ($opportunity) {
+                // اجمالي المبلغ المستثمر أقل من المبلغ المستهدف
+                return $opportunity->investments->sum('amount') < $opportunity->target_amount;
+            });
+
+        return view('in_funding_opportunities', compact('opportunities', 'cities', 'sectors'));
+    }
 }
