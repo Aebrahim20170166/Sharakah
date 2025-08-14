@@ -21,7 +21,7 @@ class Admin
             $user = auth()->user();
             if ($user) {
 
-                if (auth()->user()->role == "invistor") {
+                if (auth()->user()->role == "investor") {
                     session()->flash('error', 'أنت غير مسموح لك لدخول هذه الصفحة');
                     return redirect(route('login-page'));
                 }
