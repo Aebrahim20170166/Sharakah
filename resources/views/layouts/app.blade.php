@@ -21,12 +21,12 @@
             <nav class="navlinks">
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">الرئيسية</a>
                 <a href="{{ route('opportunities') }}" class="{{ request()->routeIs('opportunities.*') ? 'active' : '' }}">الفرص</a>
-                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">لوحة المستثمر</a>
+                <a href="{{ route('myInvestments') }}" class="{{ request()->routeIs('myInvestments') ? 'active' : '' }}">لوحة المستثمر</a>
                 <a href="{{ route('support') }}" class="{{ request()->routeIs('support') ? 'active' : '' }}">الدعم</a>
             </nav>
             <div class="cta">
                 @guest
-                    <a class="btn ghost" href="{{ route('registeration') }}">تسجيل الدخول</a>
+                <a class="btn ghost" href="{{ route('registeration') }}">تسجيل الدخول</a>
                 @endguest
                 <a class="btn primary" href="{{ route('opportunities') }}">استثمر الآن</a>
             </div>

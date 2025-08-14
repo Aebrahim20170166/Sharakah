@@ -33,8 +33,8 @@
             <label class="label" for="amount">المبلغ</label>
             <input class="input" id="amount" name="amount" placeholder="مثال: 20000" />
             <!-- <input class="input" type="hidden" name="opportunity_id" id="opportunity_id" value="{{$opportunity->id}}" /> -->
-            <div class="kpi"><span class="muted">نسبة التمويل الحالية</span><b>73%</b></div>
-            <div class="progress"><span style="--value:73%"></span></div>
+            <div class="kpi"><span class="muted">نسبة التمويل الحالية</span><b>{{ $percentage }} %</b></div>
+            <div class="progress"><span style="--value:{{ $percentage }}%"></span></div>
             <div class="form-actions" style="margin-top:10px;">
                 <button class="btn primary" type="submit">متابعة</button>
                 <a class="btn" href="{{ url('/opportunities') }}">رجوع</a>
@@ -54,7 +54,10 @@
         </thead>
         <tbody>
             @foreach($opportunity->costs as $cost)
-            <tr><td>{{$cost->item}}</td><td>{{$cost->price}}</td></tr>
+            <tr>
+                <td>{{$cost->item}}</td>
+                <td>{{$cost->price}}</td>
+            </tr>
             @endforeach
         </tbody>
     </table>

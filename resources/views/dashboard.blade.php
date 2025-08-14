@@ -31,6 +31,30 @@
         <a class="btn" href="{{ url('/opportunities') }}">استعرض</a>
     </div>
 </div>
-
 <section class="section card">
-    <h3>استثماراتي
+    <h3>استثماراتي</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>اسم الفرصه</th>
+                <th>المدينة</th>
+                <th>مدفوع</th>
+                <th>مقبوض</th>
+                <th>نسبة الاسترداد</th>
+                <th>إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>عيادة أسنان</td>
+                <td>الرياض</td>
+                <td>60,000</td>
+                <td>18,200</td>
+                <td>30.3%</td>
+                <td><a class="btn" href="{{ route('daily', 1) }}">تقرير يومي</a></td>
+            </tr>
+            
+        </tbody>
+    </table>
+</section>
+@endsection

@@ -27,8 +27,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [OpportunityController::class, 'home'])->name('home');
+Route::get('/myInvestments', [InvestmentController::class, 'myInvestments'])->name('myInvestments')->middleware('auth');
 
 Route::get('/opportunities/all', [OpportunityController::class, 'all'])->name('opportunities');
+Route::get('/daily/{id}', [OpportunityController::class, 'daily'])->name('daily');
 
 Route::get('/opportunities/filter', [OpportunityController::class, 'filter'])->name('opportunities.filter');
 

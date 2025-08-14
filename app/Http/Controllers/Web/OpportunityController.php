@@ -71,6 +71,7 @@ class OpportunityController extends Controller
     public function show($opportunity)
     {
         $opportunity = Opportunity::with(['city', 'sector'])->findOrFail($opportunity);
-        return view('opportunity', compact('opportunity'));
+        $percentage = ($opportunity->raised_amount / $opportunity->target_amount) * 100;
+        return view('opportunity', compact('opportunity', 'percentage'));
     }
 }
