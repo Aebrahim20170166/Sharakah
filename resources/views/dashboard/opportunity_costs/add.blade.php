@@ -1,52 +1,98 @@
 @extends('layouts.dashboard-app')
 
-@section('title', 'اضافة تكلفه')
+@section('title', 'إضافة تكلفة')
+@section('pageTitle', 'إضافة تكلفة')
 
 @section('content')
-        <div class="conatiner-fluid content-inner mt-n5 py-0">
-            <div>
-                <div class="row">
-                    <div class="col-xl-12 col-lg-8">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="new-user-info">
-                                    <form action="{{ route('dashboard.opportunity_costs.store') }}" method="POST">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label class="form-label" for="fname">Name</label>
-                                                <input type="text" name="item" class="form-control" id="fname" placeholder="البند">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="form-label" for="fname">السعر</label>
-                                                <input type="text" name="price" class="form-control" id="fname" placeholder="السعر">
-                                            </div>
-                                            <div class="form-group col-sm-12">
-                                                <label class="form-label">الفرصه:</label>
-                                                <select name="opportunity_id" class="selectpicker form-control" data-style="py-0">
-                                                    <option>اختار الفرصه</option>
-                                                   @foreach($opportunities as $opportunity)
-                                                       <option value="{{ $opportunity->id }}">{{ $opportunity->title }}</option>
-                                                   @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <button type="submit" class="btn btn-primary">اضافة تكلفه جديدة</button>
-                                    </form>
+<div class="conatiner-fluid content-inner mt-n5 py-0">
+    <div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="card-title mb-0">إضافة تكلفة جديدة</h4>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="new-user-info">
+                            <!-- Error Messages Section -->
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <h6 class="alert-heading mb-2">يرجى تصحيح الأخطاء التالية:</h6>
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
-                            </div>
+                            @endif
+
+                            @if(session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            @if(session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            <form action="{{ route('dashboard.opportunity_costs.store') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label" for="item">البند</label>
+                                        <input type="text" name="item" value="{{ old('item') }}" class="form-control @error('item') is-invalid @enderror" id="item" placeholder="أدخل اسم البند">
+                                        @error('item')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label" for="price">السعر</label>
+                                        <input type="number" name="price" value="{{ old('price') }}" class="form-control @error('price') is-invalid @enderror" id="price" placeholder="أدخل السعر" min="0" step="0.01">
+                                        @error('price')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div class="form-group col-md-12">
+                                        <label class="form-label" for="opportunity_id">الفرصة الاستثمارية</label>
+                                        <select name="opportunity_id" class="selectpicker form-control @error('opportunity_id') is-invalid @enderror" data-style="py-0">
+                                            <option value="">اختر الفرصة الاستثمارية</option>
+                                            @foreach($opportunities as $opportunity)
+                                                <option value="{{ $opportunity->id }}" {{ old('opportunity_id') == $opportunity->id ? 'selected' : '' }}>
+                                                    {{ $opportunity->title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('opportunity_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-plus me-2"></i>إضافة التكلفة
+                                    </button>
+                                    <a href="{{ route('dashboard.opportunity_costs.index') }}" class="btn btn-secondary ms-2">
+                                        <i class="fas fa-arrow-right me-2"></i>إلغاء
+                                    </a>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="btn-download">
-            <a class="btn btn-danger px-3 py-2" href="https://iqonic.design/product/admin-templates/hope-ui-admin-free-open-source-bootstrap-admin-template/" target="_blank">
-                <svg width="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M5.91064 20.5886C5.91064 19.7486 6.59064 19.0686 7.43064 19.0686C8.26064 19.0686 8.94064 19.7486 8.94064 20.5886C8.94064 21.4186 8.26064 22.0986 7.43064 22.0986C6.59064 22.0986 5.91064 21.4186 5.91064 20.5886ZM17.1606 20.5886C17.1606 19.7486 17.8406 19.0686 18.6806 19.0686C19.5106 19.0686 20.1906 19.7486 20.1906 20.5886C20.1906 21.4186 19.5106 22.0986 18.6806 22.0986C17.8406 22.0986 17.1606 21.4186 17.1606 20.5886Z" fill="currentColor"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1907 6.34909C20.8007 6.34909 21.2007 6.55909 21.6007 7.01909C22.0007 7.47909 22.0707 8.13909 21.9807 8.73809L21.0307 15.2981C20.8507 16.5591 19.7707 17.4881 18.5007 17.4881H7.59074C6.26074 17.4881 5.16074 16.4681 5.05074 15.1491L4.13074 4.24809L2.62074 3.98809C2.22074 3.91809 1.94074 3.52809 2.01074 3.12809C2.08074 2.71809 2.47074 2.44809 2.88074 2.50809L5.26574 2.86809C5.60574 2.92909 5.85574 3.20809 5.88574 3.54809L6.07574 5.78809C6.10574 6.10909 6.36574 6.34909 6.68574 6.34909H20.1907ZM14.1307 11.5481H16.9007C17.3207 11.5481 17.6507 11.2081 17.6507 10.7981C17.6507 10.3781 17.3207 10.0481 16.9007 10.0481H14.1307C13.7107 10.0481 13.3807 10.3781 13.3807 10.7981C13.3807 11.2081 13.7107 11.5481 14.1307 11.5481Z" fill="currentColor"></path>
-                </svg>
-            </a>
-        </div>
+    </div>
+</div>
 @endsection

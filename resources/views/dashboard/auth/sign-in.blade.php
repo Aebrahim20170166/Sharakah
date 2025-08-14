@@ -4,7 +4,7 @@
 
 @section('content')
 
-<body class=" " data-bs-spy="scroll" data-bs-target="#elements-section" data-bs-offset="0" tabindex="0">
+<body class=" " data-bs-spy="scroll" data-bs-target="#elements-section" data-bs-offset="0" tabindex="0" dir="rtl">
    <!-- loader Start -->
    <div id="loading">
       <div class="loader simple-loader">
@@ -30,56 +30,69 @@
                                  <rect x="10.5562" y="-0.556152" width="28" height="4" rx="2" transform="rotate(45 10.5562 -0.556152)" fill="currentColor" />
                               </svg>
                               <!--logo End-->
-                              <h4 class="logo-title ms-3">Sharkah Dashboard</h4>
+                              <h4 class="logo-title ms-3">لوحة تحكم شارك</h4>
                            </a>
-                           <h2 class="mb-2 text-center">Sign In</h2>
-                           <p class="text-center">Login to stay connected.</p>
+                           
+                           <h2 class="mb-2 text-center">تسجيل الدخول</h2>
+                           <p class="text-center">سجل دخولك للوصول إلى لوحة التحكم</p>
+                           
+                           <!-- Error Messages Section -->
+                           @if ($errors->any())
+                               <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                   <h6 class="alert-heading mb-2">يرجى تصحيح الأخطاء التالية:</h6>
+                                   <ul class="mb-0">
+                                       @foreach ($errors->all() as $error)
+                                           <li>{{ $error }}</li>
+                                       @endforeach
+                                   </ul>
+                                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                               </div>
+                           @endif
+
+                           @if(session('error'))
+                               <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                   <i class="fas fa-exclamation-circle me-2"></i>
+                                   {{ session('error') }}
+                                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                               </div>
+                           @endif
+
+                           @if(session('success'))
+                               <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                   <i class="fas fa-check-circle me-2"></i>
+                                   {{ session('success') }}
+                                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                               </div>
+                           @endif
+                           
                            <form action="{{ route('login') }}" method="POST">
                               @csrf
                               <div class="row">
                                  <div class="col-lg-12">
                                     <div class="form-group">
-                                       <label for="email" class="form-label">Email</label>
-                                       <input type="email" name="email" class="form-control" id="email" aria-describedby="email" placeholder=" ">
+                                       <label for="email" class="form-label">البريد الإلكتروني</label>
+                                       <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" aria-describedby="email" placeholder="أدخل بريدك الإلكتروني" value="{{ old('email') }}">
+                                       @error('email')
+                                           <div class="invalid-feedback">{{ $message }}</div>
+                                       @enderror
                                     </div>
                                  </div>
                                  <div class="col-lg-12">
                                     <div class="form-group">
-                                       <label for="password" class="form-label">Password</label>
-                                       <input type="password" name="password" class="form-control" id="password" aria-describedby="password" placeholder=" ">
+                                       <label for="password" class="form-label">كلمة المرور</label>
+                                       <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" aria-describedby="password" placeholder="أدخل كلمة المرور">
+                                       @error('password')
+                                           <div class="invalid-feedback">{{ $message }}</div>
+                                       @enderror
                                     </div>
                                  </div>
-                                 <!-- <div class="col-lg-12 d-flex justify-content-between">
-                                    <div class="form-check mb-3">
-                                       <input type="checkbox" class="form-check-input" id="customCheck1">
-                                       <label class="form-check-label" for="customCheck1">Remember Me</label>
-                                    </div>
-                                    <a href="recoverpw.html">Forgot Password?</a>
-                                 </div> -->
+                                
                               </div>
                               <div class="d-flex justify-content-center">
-                                 <button type="submit" class="btn btn-primary">Sign In</button>
+                                 <button type="submit" class="btn btn-primary">تسجيل الدخول</button>
                               </div>
-                              <!-- <p class="text-center my-3">or sign in with other accounts?</p>
-                              <div class="d-flex justify-content-center">
-                                 <ul class="list-group list-group-horizontal list-group-flush">
-                                    <li class="list-group-item border-0 pb-0">
-                                       <a href="#"><img src="../../assets/images/brands/fb.svg" alt="fb"></a>
-                                    </li>
-                                    <li class="list-group-item border-0 pb-0">
-                                       <a href="#"><img src="../../assets/images/brands/gm.svg" alt="gm"></a>
-                                    </li>
-                                    <li class="list-group-item border-0 pb-0">
-                                       <a href="#"><img src="../../assets/images/brands/im.svg" alt="im"></a>
-                                    </li>
-                                    <li class="list-group-item border-0 pb-0">
-                                       <a href="#"><img src="../../assets/images/brands/li.svg" alt="li"></a>
-                                    </li>
-                                 </ul>
-                              </div> -->
-                              <p class="mt-3 text-center">
-                                 Don’t have an account? <a href="{{ route('sign-up-page') }}" class="text-underline">Click here to sign up.</a>
-                              </p>
+                              
+                              
                            </form>
                         </div>
                      </div>
@@ -97,7 +110,7 @@
                </div>
             </div>
             <div class="col-md-6 d-md-block d-none bg-primary p-0 mt-n1 vh-100 overflow-hidden">
-               <img src="../../assets/images/auth/01.png" class="img-fluid gradient-main animated-scaleX" alt="images">
+               <img src="../../assets/images/auth/01.png" class="img-fluid gradient-main animated-scaleX" alt="صورة تسجيل الدخول">
             </div>
          </div>
       </section>

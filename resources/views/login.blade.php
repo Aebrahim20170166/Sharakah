@@ -6,7 +6,7 @@
 </div>
 <div class="grid cols-2">
   <section class="card">
-    <form action="{{route('login')}}" method="POST">
+    <form action="{{route('web.login')}}" method="POST">
       @csrf
       <h3>تسجيل الدخول</h3>
       <label class="label">البريد أو الجوال</label>
