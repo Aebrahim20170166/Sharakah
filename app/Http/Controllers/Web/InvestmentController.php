@@ -9,16 +9,16 @@ use Illuminate\Http\Request;
 class InvestmentController extends Controller
 {
     // apply for investment on some opportunity
-    public function create(Request $request)
+    public function store(Request $request, $opportunity_id)
     {
         $investment = Investment::create([
             'user_id' => $request->user()->id,
-            'opportunity_id' => $request->input('opportunity_id'),
+            'opportunity_id' => $opportunity_id,
             'amount' => $request->input('amount'),
-            'received_amount' => $request->input('received_amount'),
+            //'received_amount' => $request->input('received_amount'),
 
         ]);
 
-        return redirect()->route('opportunities.show', $investment->opportunity_id);
+        return redirect()->route('opportunity', $investment->opportunity_id);
     }
 }

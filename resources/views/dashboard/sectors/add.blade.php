@@ -1,6 +1,6 @@
 @extends('layouts.dashboard-app')
 
-@section('title', 'اضافة مستخدم')
+@section('title', 'اضافة قطاع')
 
 @section('content')
         <div class="conatiner-fluid content-inner mt-n5 py-0">
@@ -15,33 +15,53 @@
                             </div>
                         </div>
                     </div> -->
+
+                    {{-- رسالة خطأ --}}
+                    @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+
+                    {{-- رسائل أخطاء التحقق (Validation) --}}
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                     <div class="col-xl-12 col-lg-8">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
                                 <div class="header-title">
-                                    <h4 class="card-title">New Sector</h4>
+                                    <h4 class="card-title">اضافة قطاع جديد</h4>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="new-user-info">
-                                    <form action="{{ route('sectors.store')}}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('dashboard.sectors.store')}}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
                                             <div class="form-group col-md-6">
-                                                <label class="form-label" for="fname">Name Ar:</label>
-                                                <input type="text" name="name-ar" class="form-control" id="fname" placeholder="Name Ar">
+                                                <label class="form-label" for="fname">الاسم بالعربي:</label>
+                                                <input type="text" name="name_ar" class="form-control" id="fname" placeholder="Name Ar">
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label class="form-label" for="lname">Name En:</label>
-                                                <input type="text" name="name-en" class="form-control" id="lname" placeholder="Name En">
+                                                <label class="form-label" for="lname">الاسم بالانجليزي:</label>
+                                                <input type="text" name="name_en" class="form-control" id="lname" placeholder="Name En">
                                             </div>
 
                                             <div class="form-group col-md-12">
-                                                <label class="form-label" for="image">Sector Image:</label>
+                                                <label class="form-label" for="image">صورة القطاع:</label>
                                                 <input type="file" name="image" class="form-control" id="image" accept="image/*" required>
                                             </div>
                                             
-                                        <button type="submit" class="btn btn-primary">Add New User</button>
+                                        <button type="submit" class="btn btn-primary">اصافة قطاع جديد</button>
                                     </form>
                                 </div>
                             </div>
