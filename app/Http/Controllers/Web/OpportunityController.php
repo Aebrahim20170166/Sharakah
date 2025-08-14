@@ -9,6 +9,7 @@ use App\Models\DailyReport;
 use App\Models\Investment;
 use App\Models\Opportunity;
 use App\Models\Sector;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OpportunityController extends Controller
@@ -17,9 +18,10 @@ class OpportunityController extends Controller
     {
         // هنا يمكنك إضافة منطق عرض الفرص
         $opportunities = Opportunity::with(['city', 'sector'])->get();
-
+        $sectors = Sector::count();
+        $users = User::where('role', 'investor')->count();
         //$opportunities = OpportunityResource::collection($opportunities);
-        return view('index', compact('opportunities'));
+        return view('index', compact('opportunities', 'sectors', 'users'));
     }
 
     public function all(Request $request)
@@ -73,7 +75,7 @@ class OpportunityController extends Controller
     public function show($opportunity)
     {
         $opportunity = Opportunity::with(['city', 'sector'])->findOrFail($opportunity);
-        $percentage = ($opportunity->raised_amount / $opportunity->target_amount) * 100;
+        $percentage = number_format(($opportunity->raised_amount / $opportunity->target_amount) * 100, 2);
         return view('opportunity', compact('opportunity', 'percentage'));
     }
 

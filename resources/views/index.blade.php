@@ -15,7 +15,7 @@
         <a class="btn" href="{{ url('/faq')  }}">كيف يعمل النموذج؟</a>
       </div>
       <div class="stats">
-        <div class="stat"><b>+12</b> فروع نشطة</div>
+        <div class="stat"><b>+50</b> فروع نشطة</div>
         <div class="stat"><b>+320</b> شريك ممول</div>
         <div class="stat"><b>96%</b> استرداد رأس مال خلال 12 شهر (متوسط)</div>
       </div>
@@ -33,14 +33,14 @@
 <section class="section">
   <div class="pagehead">
     <h2>فرص مختارة</h2>
-    <a class="btn" href="{{ route('opportunities.index')}}">عرض جميع الفرص</a>
+    <a class="btn" href="{{ route('opportunities')}}">عرض جميع الفرص</a>
   </div>
   <div class="grid cols-3">
     @forelse ($opportunities as $opportunity)
     <article class="card">
       <h3>{{$opportunity->sector->name}} — {{$opportunity->city->name}}</h3>
       <p class="muted">الحد الأدنى: {{$opportunity->min_investment}} ر.س • العائد المتوقع: {{$opportunity->expected_roi}}% سنويًا</p>
-      <div class="progress" aria-label="نسبة التمويل"><span style="--value:35%"></span></div>
+      <div class="progress" aria-label="نسبة التمويل"><span style="--value:{{ number_format(($opportunity->raised_amount / $opportunity->target_amount) * 100, 2) }}%"></span></div>
       <div class="form-actions" style="margin-top:10px;">
         <a class="btn" href="{{ route('opportunity', $opportunity->id)}}">التفاصيل</a>
         <a class="btn primary" href="">استثمر</a>

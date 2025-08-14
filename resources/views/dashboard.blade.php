@@ -15,8 +15,8 @@
 <div class="grid cols-3">
     <div class="card">
         <h3>حالة المحفظة</h3>
-        <div class="kpi"><span class="muted">الرصيد القابل للسحب</span><b>12,800 ر.س</b></div>
-        <div class="kpi"><span class="muted">آخر توزيع</span><b>2025-07-25</b></div>
+        <!-- <div class="kpi"><span class="muted">الرصيد القابل للسحب</span><b>12,800 ر.س</b></div> -->
+        <div class="kpi"><span class="muted">آخر توزيع</span><b>{{ now()->format('Y-m-d') }}</b></div>
     </div>
     <div class="card">
         <h3>تنبيهات</h3>
