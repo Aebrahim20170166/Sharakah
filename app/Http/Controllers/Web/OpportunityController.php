@@ -18,7 +18,7 @@ class OpportunityController extends Controller
     {
         // هنا يمكنك إضافة منطق عرض الفرص
         $opportunities = Opportunity::with(['city', 'sector'])->get();
-        $sectors = Sector::count();
+        $sectors = Sector::get();
         $users = User::where('role', 'investor')->count();
         //$opportunities = OpportunityResource::collection($opportunities);
         return view('index', compact('opportunities', 'sectors', 'users'));

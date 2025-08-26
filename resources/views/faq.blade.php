@@ -3,26 +3,19 @@
 @section('title', 'الأسئلة الشائعة — منصة افتتاح الفروع')
 
 @section('content')
-<div class="pagehead">
-    <h2>الأسئلة الشائعة</h2>
-</div>
-
-<div class="grid cols-2">
-    <section class="card">
-        <h3>كيف يعمل نموذج الشراكة؟</h3>
-        <p class="muted">نموّل افتتاح فرع عبر عدة شركاء، وتديره المنصة وتشرف على التوزيعات والربط المحاسبي.</p>
-    </section>
-    <section class="card">
-        <h3>كيف يتم استرداد رأس المال؟</h3>
-        <p class="muted">يتم عبر صافي المتحصلات حسب أداء الفرع حتى اكتمال الاسترداد ثم أرباح.</p>
-    </section>
-    <section class="card">
-        <h3>هل أملك أصول الفرع؟</h3>
-        <p class="muted">الأصول مملوكة للشركة المشغلة وفقًا للعقد، والشريك يملك حقًا ماليًا بالعوائد.</p>
-    </section>
-    <section class="card">
-        <h3>كيف تصل التقارير اليومية؟</h3>
-        <p class="muted">تعرض داخل لوحة المستثمر ويمكن تفعيل الإرسال بالبريد.</p>
-    </section>
-</div>
+<section class="section">
+    <div class="container">
+      <h2 class="mb-4">الأسئلة الشائعة</h2>
+      <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#q1">كيف أسجل حساب جديد؟</button></h2>
+          <div id="q1" class="accordion-collapse collapse show"><div class="accordion-body">يمكنك التسجيل بسهولة عبر صفحة التسجيل.</div></div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#q2">هل الخدمة مجانية؟</button></h2>
+          <div id="q2" class="accordion-collapse collapse"><div class="accordion-body">نعم، الخدمة مجانية تماماً.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
 @endsection

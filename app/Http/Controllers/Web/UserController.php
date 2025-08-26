@@ -16,6 +16,11 @@ class UserController extends Controller
         return view('login');
     }
 
+    public function register_page()
+    {
+        return view('register');
+    }
+
     public function login(Request $request)
     {
         $request->validate([

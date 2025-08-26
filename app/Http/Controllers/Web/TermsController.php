@@ -12,4 +12,10 @@ class TermsController extends Controller
         // هنا يمكنك إضافة منطق عرض الشروط والأحكام
         return view('terms');
     }
+
+    public function about()
+    {
+        // هنا يمكنك إضافة منطق عرض شروط وأحكام محددة بناءً على معرف
+        return view('about');
+    }
 }

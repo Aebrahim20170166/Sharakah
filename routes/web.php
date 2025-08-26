@@ -49,12 +49,15 @@ Route::get('/support', [SupportController::class, 'index'])->name('support');
 
 
 Route::get('/terms', [TermsController::class, 'index'])->name('terms');
+Route::get('/about', [TermsController::class, 'about'])->name('about');
 Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
 Route::post('/support', [SupportController::class, 'store'])->name('support.store');
 
-Route::get('/registeration', [UserController::class, 'login_page'])->name('registeration');
+Route::get('/sign-in', [UserController::class, 'login_page'])->name('web.login_page');
+Route::get('/register_page', [UserController::class, 'register_page'])->name('web.register');
+
 
 Route::post('/login', [UserController::class, 'login'])->name('web.login');
 
