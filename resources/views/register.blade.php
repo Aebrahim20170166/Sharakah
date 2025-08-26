@@ -1,8 +1,4 @@
-@extends('layouts.app')
 
-@section('title', 'الشروط والأحكام — منصة افتتاح الفروع')
-
-@section('content')
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -11,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>تسجيل حساب جديد - شارك</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/style.css" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 
 <body class="d-flex align-items-center" style="height: 100vh;">
@@ -19,7 +15,7 @@
         <!-- Left: Register Form -->
         <div class="login-right flex-grow-1 position-relative">
             <div class="login-logo">
-                <img src="./assets/images/logo.png" alt="شارك">
+                <img src="{{ asset('images/logo.png') }}" alt="شارك">
             </div>
             <div class="d-flex flex-column justify-content-center align-items-start h-100"
                 style="margin-top:80px;z-index: 2;">
@@ -202,4 +198,3 @@
 </body>
 
 </html>
-@endsection
