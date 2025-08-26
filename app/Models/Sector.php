@@ -16,6 +16,12 @@ class Sector extends Model
     // منع الـ Mass Assignment على كل الحقول ما عدا المحدد
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
+    // relation to get all opportunities
+    public function opportunities()
+    {
+        return $this->hasMany(Opportunity::class);
+    }
+
     // handle created_at
     public function getCreatedAtAttribute($value)
     {
