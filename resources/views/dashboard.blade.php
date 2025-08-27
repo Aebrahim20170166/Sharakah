@@ -5,10 +5,10 @@
 @section('content')
 
 <div class="sub_content">
-            <img src="{{ asset('/images/dash-logo.png') }}" style="margin-top: 90px; width: 100px; height: 100px; border-radius: 10px;" />
+            <img src="{{ asset('images/dash-logo.png') }}" style="margin-top: 90px; width: 100px; height: 100px; border-radius: 10px;" />
             <h1>فهد الرشيدي</h1>
-            <p>الرئيسية <img src="{{ asset('/images/SVG/arrow.svg') }}" style="margin: 0 5px; width: 7px;" /> حسابى
-                <img src="{{ asset('/images/SVG/arrow.svg') }}" style="margin: 0 5px; width: 7px;" /> لوحة التحكم
+            <p>الرئيسية <img src="{{ asset('images/SVG/arrow.svg') }}" style="margin: 0 5px; width: 7px;" /> حسابى
+                <img src="{{ asset('images/SVG/arrow.svg') }}" style="margin: 0 5px; width: 7px;" /> لوحة التحكم
             </p>
         </div>
         <div class="overlay"></div>
