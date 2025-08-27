@@ -30,12 +30,12 @@
     </div>
     <!-- Left: Login Form -->
     <div class="login-left flex-grow-1">
-      <a href="register.html" class="otp-back">
+      <!-- <a href="register.html" class="otp-back">
         <svg width="22" height="22" fill="none" stroke="#299FDA" stroke-width="2" viewBox="0 0 24 24">
           <path d="M15 18l-6-6 6-6" />
         </svg>
         عودة
-      </a>
+      </a> -->
       <div class="otp-box position-relative">
         <div class="otp-icon mb-2">
           <svg width="36" height="36" fill="none" stroke="#299FDA" stroke-width="2" viewBox="0 0 24 24">
@@ -48,15 +48,35 @@
           أدخل كود التفعيل المرسل إلى بريدك الإلكتروني<br>
           <span class="fw-bold text-dark"> {{ $email ?? '' }}</span>
         </div>
-        <form method="POST" action="{{ route('web.verify_otp') }}">
+        {{-- رسائل النجاح/الحالة --}}
+        @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if(session('status'))
+        <div class="alert alert-info">{{ session('status') }}</div>
+        @endif
+
+        {{-- ملخص الأخطاء --}}
+        @if ($errors->any())
+        <div class="alert alert-danger">
+          <div class="fw-bold mb-1">فضلًا صحّح الأخطاء التالية:</div>
+          <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif
+        <form method="post" action="{{ route('web.verify_otp') }}">
           @csrf
           <div class="otp-inputs mb-5">
             <input type="hidden" name="email" value="{{ $email ?? '' }}">
-            <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
-            <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
-            <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
-            <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
-            <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+            <input type="hidden" name="type" value="{{ $type ?? '' }}">
+            <input name="otp[]" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+            <input name="otp[]" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+            <input name="otp[]" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+            <input name="otp[]" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+            <input name="otp[]" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
           </div>
           <button type="submit" class="btn w-100"
             style="background:#1E4262;color:#fff;font-size:1.15rem;">تأكيد</button>

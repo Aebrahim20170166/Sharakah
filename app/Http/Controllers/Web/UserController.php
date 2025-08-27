@@ -34,6 +34,10 @@ class UserController extends Controller
     {
         return view('reset_password');
     }
+    public function new_password()
+    {
+        return view('new_password');
+    }
 
     public function login(Request $request)
     {
@@ -78,7 +82,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
         ], [
             'name.required' => 'الاسم مطلوب',
             'name.string' => 'الاسم يجب أن يكون نص',
@@ -94,7 +98,6 @@ class UserController extends Controller
             'password.required' => 'كلمة المرور مطلوبة',
             'password.string' => 'كلمة المرور يجب أن تكون نص',
             'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل',
-            'password.confirmed' => 'تأكيد كلمة المرور غير متطابق'
         ]);
 
         try {
@@ -103,14 +106,17 @@ class UserController extends Controller
                 'phone' => $data['phone'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'status' => 'active',
-                'role' => 'investor'
+                'status' => 'suspended',
+                'role' => 'investor',
+                'otp' => rand(11111, 99999)
             ]);
 
-            Auth::login($user);
-            return redirect()->route('otp.page') // غيّر otp.page باسم الـ route اللي عامل بيه صفحة OTP
-                ->with('success', 'تم إنشاء الحساب بنجاح! تم إرسال رمز التحقق إلى بريدك الإلكتروني ' . $user->email);
 
+            return view('otp', [
+                'type' => 'register',
+                'email'   => $user->email,
+                'success' => 'تم إنشاء الحساب بنجاح! تم إرسال رمز التحقق إلى بريدك الإلكتروني ' . $user->email,
+            ]);
         } catch (\Exception $e) {
             return back()
                 ->withInput($request->except('password', 'password_confirmation'))
@@ -232,14 +238,22 @@ class UserController extends Controller
         $user->save();
 
         // إرسال الإيميل
-        Mail::to($user->email)->send(new SendOtpMail($otp));
+        // Mail::to($user->email)->send(new SendOtpMail($otp));
         // هنا يمكنك إضافة منطق إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني
-        return view('otp', $request->only('email'))
-            ->with('success', 'تم إرسال رابط استرجاع كلمة المرور إلى بريدك الإلكتروني إذا كان مسجلاً في النظام.');
+
+            return view('otp', [
+                'email'   => $user->email,
+                'success' => 'تم إرسال رابط استرجاع كلمة المرور إلى بريدك الإلكتروني إذا كان مسجلاً في النظام.',
+            ]);
     }
 
     public function verify_otp(Request $request)
     {
+        // دمج الأرقام من المصفوفة إلى نص واحد
+        $request->merge([
+            'otp' => is_array($request->otp) ? implode('', $request->otp) : $request->otp
+        ]);
+
         $request->validate([
             'email' => 'required|email|exists:users,email',
             'otp' => 'required|digits:5',
@@ -253,48 +267,46 @@ class UserController extends Controller
 
         $user = User::where('email', $request->email)->firstOrFail();
 
-        // التحقق من الكود وتاريخ انتهاءه
-        if ($user->otp !== $request->otp ) {
+        // التحقق من الكود
+        if ($user->otp !== $request->otp) {
             return back()
                 ->withInput($request->only('email'))
                 ->withErrors(['otp' => 'كود التحقق غير صحيح']);
         }
-
-        return view('new_password', $request->only('email'))
+        if ($request->type) {
+            Auth::login($user);
+            return redirect()->route('home')->with('success', 'تم إنشاء الحساب بنجاح! 🎉');
+        }
+        
+        return redirect()->route('web.new_password') // غيّر 'otp_page' لاسم الـ route الصحيح لو مختلف
+            ->withInput($request->only('email'))
             ->with('success', 'تم التحقق بنجاح! يمكنك الآن تعيين كلمة مرور جديدة.');
     }
 
     public function updatePassword(Request $request)
     {
+        dd($request->all());
         $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
         ], [
-            'email.required' => 'البريد الإلكتروني مطلوب',
             'email.email' => 'البريد الإلكتروني يجب أن يكون صحيحاً',
             'email.exists' => 'هذا البريد الإلكتروني غير مسجل',
             'password.required' => 'كلمة المرور الجديدة مطلوبة',
             'password.string' => 'كلمة المرور الجديدة يجب أن تكون نص',
             'password.min' => 'كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل',
-            'password.confirmed' => 'تأكيد كلمة المرور الجديدة غير متطابق'
         ]);
 
-        try {
-            $user = User::where('email', $request->email)->firstOrFail();
 
-            // تحديث كلمة المرور
-            $user->password = Hash::make($request->password);
-            // مسح كود OTP وتاريخ انتهاءه
-            $user->otp = null;
-            //$user->otp_expires_at = null;
-            $user->save();
+        $user = User::where('email', $request->email)->firstOrFail();
 
-            return redirect()->route('web.login_page')
-                ->with('success', 'تم تحديث كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput($request->except('password', 'password_confirmation'))
-                ->with('error', 'حدث خطأ أثناء تحديث كلمة المرور. يرجى المحاولة مرة أخرى.');
-        }
+        // تحديث كلمة المرور
+        $user->password = Hash::make($request->password);
+        // مسح كود OTP وتاريخ انتهاءه
+        $user->otp = null;
+        //$user->otp_expires_at = null;
+        $user->save();
+        dd("dd");
+        return redirect()->route('web.login_page')
+            ->with('success', 'تم تحديث كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.');
     }
 }

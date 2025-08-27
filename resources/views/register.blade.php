@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -41,12 +40,31 @@
                 <div class="text-center text-muted mb-3" style="font-size:1.05rem;">
                     على بعد خطوة بسيطة من الاستثمار الرابح 🚀
                 </div>
+                {{-- رسائل النجاح/الحالة --}}
+                @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+                @if(session('status'))
+                <div class="alert alert-info">{{ session('status') }}</div>
+                @endif
+
+                {{-- ملخص الأخطاء --}}
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <div class="fw-bold mb-1">فضلًا صحّح الأخطاء التالية:</div>
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <form action="{{route('register')}}" method="POST">
-                      @csrf
+                    @csrf
                     <div class="mb-3">
                         <label class="form-label fw-bold">اسمك</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="name" placeholder="اسمك بالكامل ...">
+                            <input type="text" required value="{{ old('name') }}" class="form-control" name="name" placeholder="اسمك بالكامل ...">
                             <span class="input-group-text ">
                                 <svg width="20" height="20" fill="none" stroke="#1E4262" stroke-width="2"
                                     viewBox="0 0 24 24">
@@ -122,13 +140,13 @@
                                     </defs>
                                 </svg>
                             </span>
-                            <input type="text" name="phone" class="form-control" placeholder="566 XXX XX">
+                            <input type="text" required name="phone" value="{{ old('phone') }}" class="form-control" placeholder="566 XXX XX">
                             <span class="input-group-text ">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M24 0V24H0V0H24Z" fill="white" fill-opacity="0.01"/>
-<path opacity="0.3" d="M6 4C6 3.44772 6.44772 3 7 3H17C17.5523 3 18 3.44772 18 4V20C18 20.5523 17.5523 21 17 21H7C6.44772 21 6 20.5523 6 20V4Z" fill="#1E4262"/>
-<path d="M12 17H12.01M7 21H17C17.5523 21 18 20.5523 18 20V4C18 3.44772 17.5523 3 17 3H7C6.44772 3 6 3.44772 6 4V20C6 20.5523 6.44772 21 7 21Z" stroke="#1E4262" stroke-width="1.5" stroke-linecap="round"/>
-</svg>
+                                    <path d="M24 0V24H0V0H24Z" fill="white" fill-opacity="0.01" />
+                                    <path opacity="0.3" d="M6 4C6 3.44772 6.44772 3 7 3H17C17.5523 3 18 3.44772 18 4V20C18 20.5523 17.5523 21 17 21H7C6.44772 21 6 20.5523 6 20V4Z" fill="#1E4262" />
+                                    <path d="M12 17H12.01M7 21H17C17.5523 21 18 20.5523 18 20V4C18 3.44772 17.5523 3 17 3H7C6.44772 3 6 3.44772 6 4V20C6 20.5523 6.44772 21 7 21Z" stroke="#1E4262" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
 
                             </span>
                         </div>
@@ -136,7 +154,7 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">البريد الإلكتروني</label>
                         <div class="input-group">
-                            <input type="email" name="email" class="form-control" placeholder="XXX@gmail.com">
+                            <input type="email" value="{{ old('email') }}" required name="email" class="form-control" placeholder="XXX@gmail.com">
                             <span class="input-group-text ">
                                 <svg width="20" height="20" fill="none" stroke="#1E4262" stroke-width="2"
                                     viewBox="0 0 24 24">
@@ -149,18 +167,18 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">كلمة المرور</label>
                         <div class="input-group">
-                            <input type="password" name="password" class="form-control" placeholder="اكتب كلمة مرورك ...">
+                            <input type="password" required name="password" class="form-control" placeholder="اكتب كلمة مرورك ...">
                             <span class="input-group-text ">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M24 0V24H0V0H24Z" fill="white" fill-opacity="0.01"/>
-<g opacity="0.3">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M12.6334 13.9128C14.683 14.9071 17.222 14.5535 18.9235 12.852C21.0714 10.7041 21.0714 7.22169 18.9235 5.0738C16.7756 2.92592 13.2932 2.92592 11.1453 5.0738C9.63395 6.58516 9.18606 8.75728 9.80164 10.6603L3.7207 16.7412V19.5696H7.96334V16.7412H10.7918V13.9128H12.6334Z" fill="#1E4262"/>
-<path d="M16.2405 8.25977C16.2405 8.53591 16.0166 8.75977 15.7405 8.75977C15.4643 8.75977 15.2405 8.53591 15.2405 8.25977C15.2405 7.98362 15.4643 7.75977 15.7405 7.75977C16.0166 7.75977 16.2405 7.98362 16.2405 8.25977Z" fill="#1E4262"/>
-</g>
-<path d="M16.2405 8.25977C16.2405 8.53591 16.0166 8.75977 15.7405 8.75977C15.4643 8.75977 15.2405 8.53591 15.2405 8.25977C15.2405 7.98362 15.4643 7.75977 15.7405 7.75977C16.0166 7.75977 16.2405 7.98362 16.2405 8.25977Z" fill="#10161F"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M12.6334 13.9128C14.683 14.9071 17.222 14.5535 18.9235 12.852C21.0714 10.7041 21.0714 7.22169 18.9235 5.0738C16.7756 2.92592 13.2932 2.92592 11.1453 5.0738C9.63395 6.58516 9.18606 8.75728 9.80164 10.6603L3.7207 16.7412V19.5696H7.96334V16.7412H10.7918V13.9128H12.6334Z" stroke="#1E4262" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M16.2405 8.25977C16.2405 8.53591 16.0166 8.75977 15.7405 8.75977C15.4643 8.75977 15.2405 8.53591 15.2405 8.25977C15.2405 7.98362 15.4643 7.75977 15.7405 7.75977C16.0166 7.75977 16.2405 7.98362 16.2405 8.25977Z" stroke="#1E4262" stroke-width="1.5" stroke-linejoin="round"/>
-</svg>
+                                    <path d="M24 0V24H0V0H24Z" fill="white" fill-opacity="0.01" />
+                                    <g opacity="0.3">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.6334 13.9128C14.683 14.9071 17.222 14.5535 18.9235 12.852C21.0714 10.7041 21.0714 7.22169 18.9235 5.0738C16.7756 2.92592 13.2932 2.92592 11.1453 5.0738C9.63395 6.58516 9.18606 8.75728 9.80164 10.6603L3.7207 16.7412V19.5696H7.96334V16.7412H10.7918V13.9128H12.6334Z" fill="#1E4262" />
+                                        <path d="M16.2405 8.25977C16.2405 8.53591 16.0166 8.75977 15.7405 8.75977C15.4643 8.75977 15.2405 8.53591 15.2405 8.25977C15.2405 7.98362 15.4643 7.75977 15.7405 7.75977C16.0166 7.75977 16.2405 7.98362 16.2405 8.25977Z" fill="#1E4262" />
+                                    </g>
+                                    <path d="M16.2405 8.25977C16.2405 8.53591 16.0166 8.75977 15.7405 8.75977C15.4643 8.75977 15.2405 8.53591 15.2405 8.25977C15.2405 7.98362 15.4643 7.75977 15.7405 7.75977C16.0166 7.75977 16.2405 7.98362 16.2405 8.25977Z" fill="#10161F" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.6334 13.9128C14.683 14.9071 17.222 14.5535 18.9235 12.852C21.0714 10.7041 21.0714 7.22169 18.9235 5.0738C16.7756 2.92592 13.2932 2.92592 11.1453 5.0738C9.63395 6.58516 9.18606 8.75728 9.80164 10.6603L3.7207 16.7412V19.5696H7.96334V16.7412H10.7918V13.9128H12.6334Z" stroke="#1E4262" stroke-width="1.5" stroke-linejoin="round" />
+                                    <path d="M16.2405 8.25977C16.2405 8.53591 16.0166 8.75977 15.7405 8.75977C15.4643 8.75977 15.2405 8.53591 15.2405 8.25977C15.2405 7.98362 15.4643 7.75977 15.7405 7.75977C16.0166 7.75977 16.2405 7.98362 16.2405 8.25977Z" stroke="#1E4262" stroke-width="1.5" stroke-linejoin="round" />
+                                </svg>
 
                             </span>
                         </div>
@@ -193,7 +211,7 @@
             </div>
         </div>
         <!-- Right: Cover & Info -->
-        
+
     </div>
 </body>
 

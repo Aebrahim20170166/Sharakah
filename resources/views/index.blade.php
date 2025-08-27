@@ -14,14 +14,14 @@
         (API) يطلعك على المبيعات والمصروفات وتوزيعات الأرباح.
     </p>
     <div class="d-flex gap-3 align-items-center">
-        <a href="#" class="btn btn-primary btn-lg">استكشف الفرص <svg width="25" height="24" viewBox="0 0 25 24"
+        <a href="#" class="btn btn-lg" style="background-color: #299FDA; padding: 12px 16px; font-size: 16px; border-radius: 12px;">استكشف الفرص <svg width="25" height="24" viewBox="0 0 25 24"
                 fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M24.5 0V24H0.5V0H24.5Z" fill="white" fill-opacity="0.01" />
                 <path d="M6.84302 6.34326L18.1569 17.6571M14.5 6L6.5 6L6.5 14" stroke="white" stroke-width="1.5"
                     stroke-linecap="round" stroke-linejoin="round" />
             </svg>
         </a>
-        <a href="#" class="btn btn-dark btn-lg"><svg width="25" height="24" viewBox="0 0 25 24" fill="none"
+        <a href="#" class="btn btn-dark" style="background-color: #12283B; padding: 12px 16px; font-size: 16px; border-radius: 12px;"><svg width="25" height="24" viewBox="0 0 25 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M24.5 0V24H0.5V0H24.5Z" fill="white" fill-opacity="0.01" />
                 <circle opacity="0.3" cx="12.5" cy="12" r="9" fill="white" />
@@ -29,7 +29,7 @@
                     d="M12.5 17H12.502M9.875 10.125C9.875 8.67525 11.0503 7.5 12.5 7.5C13.9497 7.5 15.125 8.67525 15.125 10.125C15.125 11.2297 14.4426 12.1751 13.4763 12.5625C12.9636 12.768 12.5 13.1977 12.5 13.75V14M21.5 12C21.5 16.9706 17.4706 21 12.5 21C7.52944 21 3.5 16.9706 3.5 12C3.5 7.02944 7.52944 3 12.5 3C17.4706 3 21.5 7.02944 21.5 12Z"
                     stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            آلية العمل</a>
+              آلية العمل</a>
     </div>
 </div>
 <div class="overlay"></div>

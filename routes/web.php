@@ -60,9 +60,11 @@ Route::get('/register_page', [UserController::class, 'register_page'])->name('we
 
 Route::get('/otp', [UserController::class, 'otp_page'])->name('web.otp_page');
 Route::get('/reset-password', [UserController::class, 'reset_password_page'])->name('web.reset_password');
+Route::get('/new-password', [UserController::class, 'new_password'])->name('web.new_password');
 
 Route::post('/verify_otp', [UserController::class, 'verify_otp'])->name('web.verify_otp');
 Route::post('/reset', [UserController::class, 'reset_password'])->name('reset_password');
+Route::post('/changePassoword', [UserController::class, 'updatePassword'])->name('changePassoword');
 
 
 
