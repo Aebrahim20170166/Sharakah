@@ -23,6 +23,7 @@ style="height:300px !important;"
 
 <!-- ✅ About Section -->
 <section class="about-section py-5" style="background-color: #fafbfc;">
+
   <div class="container">
     <div class="row align-items-start">
       <div class="col-md-4">
@@ -32,6 +33,7 @@ style="height:300px !important;"
             <input type="text" class="form-control" placeholder="بحث عن فرصة..." aria-label="Username"
               aria-describedby="addon-wrapping" style="padding-right: 60px; border-radius: inherit;">
           </div>
+
 
           <div class="sub-container mt-4 w-100 p-0">
             <label for="city-select" class="form-label fw-bold">المدينة</label>

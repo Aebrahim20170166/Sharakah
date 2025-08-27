@@ -68,9 +68,9 @@
               <input class="form-check-input" type="checkbox" id="rememberMe" checked>
               <label class="form-check-label" for="rememberMe">تذكرني</label>
             </div> -->
-            <!-- <div>
-              <a href="#" class="text-primary fw-bold" style="font-size:0.98rem;">نسيت كلمة المرور؟</a>
-            </div> -->
+            <div>
+              <a href="{{ route('web.reset_password') }}" class="text-primary fw-bold" style="font-size:0.98rem;">نسيت كلمة المرور؟</a>
+            </div>
             
           </div>
           <button type="submit" class="btn w-100" style="background:#1E4262;color:#fff;font-size:1.15rem;">تسجيل دخول</button>

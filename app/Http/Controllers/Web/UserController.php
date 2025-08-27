@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
+use App\Mail\SendOtpMail; // هنعمل ميل كلاس بعد شوية
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -19,6 +23,16 @@ class UserController extends Controller
     public function register_page()
     {
         return view('register');
+    }
+
+    public function otp_page()
+    {
+        return view('otp');
+    }
+
+    public function reset_password_page()
+    {
+        return view('reset_password');
     }
 
     public function login(Request $request)
@@ -59,6 +73,7 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
+
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
@@ -93,9 +108,9 @@ class UserController extends Controller
             ]);
 
             Auth::login($user);
-
             return redirect()->route('otp.page') // غيّر otp.page باسم الـ route اللي عامل بيه صفحة OTP
                 ->with('success', 'تم إنشاء الحساب بنجاح! تم إرسال رمز التحقق إلى بريدك الإلكتروني ' . $user->email);
+
         } catch (\Exception $e) {
             return back()
                 ->withInput($request->except('password', 'password_confirmation'))
@@ -194,6 +209,92 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'حدث خطأ أثناء تغيير كلمة المرور. يرجى المحاولة مرة أخرى.');
+        }
+    }
+
+    public function reset_password(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ], [
+            'email.required' => 'البريد الإلكتروني مطلوب',
+            'email.email' => 'البريد الإلكتروني يجب أن يكون صحيحاً',
+            'email.exists' => 'هذا البريد الإلكتروني غير مسجل'
+        ]);
+        $user = User::where('email', $request->email)->firstOrFail();
+
+        // توليد كود OTP عشوائي من 5 أرقام
+        $otp = rand(10000, 99999);
+
+        // تخزين الكود وتاريخ انتهاءه (مثلاً بعد 10 دقايق)
+        $user->otp = $otp;
+        //$user->otp_expires_at = Carbon::now()->addMinutes(10);
+        $user->save();
+
+        // إرسال الإيميل
+        Mail::to($user->email)->send(new SendOtpMail($otp));
+        // هنا يمكنك إضافة منطق إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني
+        return view('otp', $request->only('email'))
+            ->with('success', 'تم إرسال رابط استرجاع كلمة المرور إلى بريدك الإلكتروني إذا كان مسجلاً في النظام.');
+    }
+
+    public function verify_otp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'otp' => 'required|digits:5',
+        ], [
+            'email.required' => 'البريد الإلكتروني مطلوب',
+            'email.email' => 'البريد الإلكتروني يجب أن يكون صحيحاً',
+            'email.exists' => 'هذا البريد الإلكتروني غير مسجل',
+            'otp.required' => 'كود التحقق مطلوب',
+            'otp.digits' => 'كود التحقق يجب أن يكون 5 أرقام',
+        ]);
+
+        $user = User::where('email', $request->email)->firstOrFail();
+
+        // التحقق من الكود وتاريخ انتهاءه
+        if ($user->otp !== $request->otp ) {
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['otp' => 'كود التحقق غير صحيح']);
+        }
+
+        return view('new_password', $request->only('email'))
+            ->with('success', 'تم التحقق بنجاح! يمكنك الآن تعيين كلمة مرور جديدة.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'email.required' => 'البريد الإلكتروني مطلوب',
+            'email.email' => 'البريد الإلكتروني يجب أن يكون صحيحاً',
+            'email.exists' => 'هذا البريد الإلكتروني غير مسجل',
+            'password.required' => 'كلمة المرور الجديدة مطلوبة',
+            'password.string' => 'كلمة المرور الجديدة يجب أن تكون نص',
+            'password.min' => 'كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل',
+            'password.confirmed' => 'تأكيد كلمة المرور الجديدة غير متطابق'
+        ]);
+
+        try {
+            $user = User::where('email', $request->email)->firstOrFail();
+
+            // تحديث كلمة المرور
+            $user->password = Hash::make($request->password);
+            // مسح كود OTP وتاريخ انتهاءه
+            $user->otp = null;
+            //$user->otp_expires_at = null;
+            $user->save();
+
+            return redirect()->route('web.login_page')
+                ->with('success', 'تم تحديث كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput($request->except('password', 'password_confirmation'))
+                ->with('error', 'حدث خطأ أثناء تحديث كلمة المرور. يرجى المحاولة مرة أخرى.');
         }
     }
 }

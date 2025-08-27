@@ -8,6 +8,7 @@ style="height:300px !important;"
 @endsection
 
 <div class="sub_content">
+
     <img src="{{ asset('/images/dash-logo.png') }}" style="margin-top: 90px; width: 100px; height: 100px; border-radius: 10px;" />
     <h1>{{ auth()->user()->name }}</h1>
     <p>الرئيسية <img src="{{ asset('/images/SVG/arrow.svg') }}" style="margin: 0 5px; width: 7px;" /> حسابى
@@ -15,6 +16,7 @@ style="height:300px !important;"
     </p>
 </div>
 <div class="overlay"></div>
+
 
 </header>
 

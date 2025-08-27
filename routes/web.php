@@ -58,6 +58,13 @@ Route::post('/support', [SupportController::class, 'store'])->name('support.stor
 Route::get('/sign-in', [UserController::class, 'login_page'])->name('web.login_page');
 Route::get('/register_page', [UserController::class, 'register_page'])->name('web.register');
 
+Route::get('/otp', [UserController::class, 'otp_page'])->name('web.otp_page');
+Route::get('/reset-password', [UserController::class, 'reset_password_page'])->name('web.reset_password');
+
+Route::post('/verify_otp', [UserController::class, 'verify_otp'])->name('web.verify_otp');
+Route::post('/reset', [UserController::class, 'reset_password'])->name('reset_password');
+
+
 
 Route::post('/login', [UserController::class, 'login'])->name('web.login');
 
