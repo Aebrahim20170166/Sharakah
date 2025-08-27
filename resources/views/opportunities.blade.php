@@ -98,8 +98,9 @@
                 <div class="container cards">
                     <div class="content-divs">
                         <div class="tab-content" id="div1">
-                            @foreach($opportunities as $opportunity)
                             <div class="row">
+                            @foreach($opportunities as $opportunity)
+                            
                                 <div class="col-md-6 col-xs-12">
                                     <div class="card" style="width: 100%;">
                                         <a href="{{ route('opportunity', $opportunity->id) }}">
@@ -133,9 +134,9 @@
 
 
 
-                            </div>
+                            
                             @endforeach
-
+          </div>
                         </div>
 
                         <!-- <div class="tab-content " id="div2">
