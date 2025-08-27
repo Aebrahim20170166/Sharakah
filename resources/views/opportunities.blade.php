@@ -20,7 +20,7 @@
             <div class="col-md-4">
                 <div class="select-container">
                     <div class="input-group flex-nowrap align-items-start rounded-3 ">
-                        <span class="input-group-text" id="addon-wrapping"><img src="./assets/images/SVG/search.svg" /></span>
+                        <span class="input-group-text" id="addon-wrapping"><img src="{{ asset('images/SVG/search.svg') }}" /></span>
                         <input type="text" class="form-control" placeholder="بحث عن فرصة..." aria-label="Username"
                             aria-describedby="addon-wrapping" style="padding-right: 60px; border-radius: inherit;">
                     </div>
