@@ -46,7 +46,6 @@ class UserController extends Controller
             throw ValidationException::withMessages([
                 'email' => 'بيانات الاعتماد المقدمة غير صحيحة.',
             ]);
-
         } catch (ValidationException $e) {
             return back()
                 ->withInput($request->only('email'))
@@ -82,7 +81,7 @@ class UserController extends Controller
             'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل',
             'password.confirmed' => 'تأكيد كلمة المرور غير متطابق'
         ]);
-        
+
         try {
             $user = User::create([
                 'name' => $data['name'],
@@ -95,9 +94,8 @@ class UserController extends Controller
 
             Auth::login($user);
 
-            return redirect()->route('home')
-                ->with('success', 'تم إنشاء الحساب بنجاح! مرحباً بك ' . $user->name . ' 🎉');
-                
+            return redirect()->route('otp.page') // غيّر otp.page باسم الـ route اللي عامل بيه صفحة OTP
+                ->with('success', 'تم إنشاء الحساب بنجاح! تم إرسال رمز التحقق إلى بريدك الإلكتروني ' . $user->email);
         } catch (\Exception $e) {
             return back()
                 ->withInput($request->except('password', 'password_confirmation'))
@@ -109,13 +107,12 @@ class UserController extends Controller
     {
         try {
             Auth::logout();
-            
+
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
             return redirect()->route('home')
                 ->with('success', 'تم تسجيل الخروج بنجاح! نراك قريباً 👋');
-
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'حدث خطأ أثناء تسجيل الخروج. يرجى المحاولة مرة أخرى.');
@@ -131,7 +128,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
@@ -159,7 +156,6 @@ class UserController extends Controller
 
             return redirect()->back()
                 ->with('success', 'تم تحديث الملف الشخصي بنجاح! ✨');
-                
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
@@ -183,7 +179,7 @@ class UserController extends Controller
 
         try {
             $user = Auth::user();
-            
+
             if (!Hash::check($request->current_password, $user->password)) {
                 return back()
                     ->withErrors(['current_password' => 'كلمة المرور الحالية غير صحيحة']);
@@ -195,7 +191,6 @@ class UserController extends Controller
 
             return redirect()->back()
                 ->with('success', 'تم تغيير كلمة المرور بنجاح! 🔐');
-                
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'حدث خطأ أثناء تغيير كلمة المرور. يرجى المحاولة مرة أخرى.');

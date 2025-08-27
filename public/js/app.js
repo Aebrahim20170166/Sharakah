@@ -87,8 +87,8 @@ const page = location.pathname.split('/').pop();
 
 const pageMap = {
     '': '/',
-    'index.html': '/',
-    'about.html': 'about.html',
+    '/': '/',
+    'about': '/about',
     'investmentOpportunities.html': 'investmentOpportunities.html',
     'contact.html': 'contact.html'
 };
