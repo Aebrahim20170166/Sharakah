@@ -108,9 +108,9 @@ class UserController extends Controller
             ]);
 
             Auth::login($user);
+            return redirect()->route('otp.page') // غيّر otp.page باسم الـ route اللي عامل بيه صفحة OTP
+                ->with('success', 'تم إنشاء الحساب بنجاح! تم إرسال رمز التحقق إلى بريدك الإلكتروني ' . $user->email);
 
-            return redirect()->route('home')
-                ->with('success', 'تم إنشاء الحساب بنجاح! مرحباً بك ' . $user->name . ' 🎉');
         } catch (\Exception $e) {
             return back()
                 ->withInput($request->except('password', 'password_confirmation'))

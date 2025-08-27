@@ -40,7 +40,7 @@ class OpportunityController extends Controller
             $opportunities = $opportunities->where('status', $request->input('status'));
         }
 
-        $opportunities = $opportunities->get();
+        $opportunities = $opportunities->paginate(10);
 
         $sectors = Sector::all();
         $cities = City::all();
