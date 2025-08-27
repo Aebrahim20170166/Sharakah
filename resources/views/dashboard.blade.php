@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'لوحة المستثمر — منصة افتتاح الفروع')
+@section('title', 'لوحة الشريك المؤسس — منصة افتتاح الفروع')
 
 @section('content')
 @section('headerStyle')

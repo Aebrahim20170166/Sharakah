@@ -75,7 +75,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('opportunities') ? 'active' : '' }}" href="{{ route('opportunities') }}">
-                                الفرص الإستثمارية
+                                الفرص المتاحة
                             </a>
                         </li>
                         <li class="nav-item">
@@ -86,7 +86,7 @@
                         @auth
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('myInvestments') ? 'active' : '' }}" href="{{ route('myInvestments') }}">
-                                لوحة المستثمر
+                                لوحة الشريك المؤسس
                             </a>
                         </li>
                         @endauth
